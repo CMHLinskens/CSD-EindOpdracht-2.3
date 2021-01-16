@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,7 @@ import org.osmdroid.views.MapView;
 
 public class MapFragment extends Fragment {
     private static final String LOGTAG = MapFragment.class.getName();
-
+    private Button button;
     private MapView mapView = null;
 
     @Nullable
@@ -33,6 +34,10 @@ public class MapFragment extends Fragment {
         mapView.setMultiTouchControls(true);
         mapView.setBuiltInZoomControls(false);
 
+        button = view.findViewById(R.id.btn_map_inventory);
+        button.setOnClickListener(v -> {
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new InventoryFragment()).addToBackStack(null).commit(); // TODO: use factory
+        });
         return view;
     }
 

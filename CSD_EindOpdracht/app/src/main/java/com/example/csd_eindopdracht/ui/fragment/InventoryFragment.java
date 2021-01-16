@@ -31,10 +31,10 @@ public class InventoryFragment extends Fragment {
 
         collectableRecyclerView = view.findViewById(R.id.collectable_recycler);
         collectableRecyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this.getContext(), 2);
-//        collectables = Data.INSTANCE.getInventory();
-        inventory.add(new YugiohCollectable("name gang", "card_placeholder.jpg", true)); // TEST PURPOSES
+        layoutManager = new GridLayoutManager(getContext(), 2);
+//        inventory = Data.INSTANCE.getInventory();
 
+        collectableAdapter = new CollectableAdapter(inventory);
         collectableRecyclerView.setLayoutManager(layoutManager);
         collectableRecyclerView.setAdapter(collectableAdapter);
 
