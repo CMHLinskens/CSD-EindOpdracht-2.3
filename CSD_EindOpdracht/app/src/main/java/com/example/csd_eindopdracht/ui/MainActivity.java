@@ -16,11 +16,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.example.csd_eindopdracht.BuildConfig;
 import com.example.csd_eindopdracht.services.LocationService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.osmdroid.config.Configuration;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_map);
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         // Create a notification channel for Android 8.1 and above
         createNotificationChannel();
