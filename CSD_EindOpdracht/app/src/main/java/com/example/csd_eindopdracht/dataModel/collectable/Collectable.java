@@ -3,11 +3,25 @@ package com.example.csd_eindopdracht.dataModel.collectable;
 public abstract class Collectable {
     String name;
     String imgLink;
-    boolean isInInventory;
 
-    public Collectable(String name, String imgLink, boolean isInInventory) {
+    public Collectable(String name, String imgLink) {
         this.name = name;
         this.imgLink = imgLink;
-        this.isInInventory = isInInventory;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImgLink() {
+        return imgLink;
+    }
+
+    public void setImgLink(String imgLink) {
+        this.imgLink = imgLink;
     }
 }

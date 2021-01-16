@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.csd_eindopdracht.BuildConfig;
+import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.services.LocationService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set User Agent Value for OSM map view
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+
+        Data.INSTANCE.retrieveAllData(getApplicationContext(), factory);
 
         // Create a notification channel for Android 8.1 and above
         createNotificationChannel();
