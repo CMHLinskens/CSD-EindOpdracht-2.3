@@ -17,16 +17,19 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.csd_eindopdracht.BuildConfig;
+import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.services.LocationService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
 
 import com.example.csd_eindopdracht.R;
+import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
 import com.example.csd_eindopdracht.ui.fragment.MapFragment;
 import com.example.csd_eindopdracht.util.Factory;
 import com.example.csd_eindopdracht.util.YugiohFactory;
@@ -40,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set User Agent Value for OSM map view
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+
+        Data.INSTANCE.retrieveAllData(getApplicationContext(), factory);
 
         // Create a notification channel for Android 8.1 and above
         createNotificationChannel();
@@ -50,24 +56,13 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION,
         });
 
-        // Subscribe to EventBus
-        EventBus.getDefault().register(this);
-        // Start locationService as an ForegroundService
+        // Start locationService as a ForegroundService
         Intent locationServiceIntent = new Intent(this, LocationService.class);
         startForegroundService(locationServiceIntent);
 
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, factory.createMapFragment()).commit();
         }
-    }
-
-    /**
-     * Method triggered by EventBus when new location is received
-     * @param location new location data
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLocationEvent(Location location){
-        Log.d(LOGTAG, "Latitude: " + location.getLatitude() + " Longitude: " + location.getLongitude());
     }
 
     /**

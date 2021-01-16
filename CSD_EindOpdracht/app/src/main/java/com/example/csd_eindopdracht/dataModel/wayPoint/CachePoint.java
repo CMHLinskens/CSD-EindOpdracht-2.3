@@ -12,4 +12,12 @@ public abstract class CachePoint extends WayPoint {
         super(name, location);
         this.collectable = collectable;
     }
+
+    public Collectable getCollectable() {
+        return collectable;
+    }
+
+    public void setCollectable(Collectable collectable) {
+        this.collectable = collectable;
+    }
 }

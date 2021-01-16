@@ -60,7 +60,7 @@ public class LocationService extends Service {
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), "notifychannelid")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText("CultuurKompas Service Running ")
+                .setContentText("Location Service Running ")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT).build();
         startForeground(1, notification);
 
