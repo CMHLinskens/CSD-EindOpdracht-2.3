@@ -30,7 +30,7 @@ public enum Data {
     private Factory factory = null;
     private List<Collectable> collectables = new ArrayList<>();
     private List<WayPoint> wayPoints = new ArrayList<>();
-    private  List<Collectable> inventory = new ArrayList<>();
+    private List<Collectable> inventory = new ArrayList<>();
 
     public void retrieveAllData(Context context, Factory factory) {
         this.factory = factory;
@@ -76,5 +76,9 @@ public enum Data {
             return null;
         }
         return jsonString;
+    }
+
+    public List<Collectable> getCollectables() {
+        return collectables;
     }
 }

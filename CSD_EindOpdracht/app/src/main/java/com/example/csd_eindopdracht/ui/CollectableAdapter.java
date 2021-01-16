@@ -1,9 +1,13 @@
 package com.example.csd_eindopdracht.ui;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +30,13 @@ public class CollectableAdapter extends RecyclerView.Adapter<CollectableAdapter.
     }
 
     public static class CollectableViewHolder extends RecyclerView.ViewHolder {
-//        public TextView itemNameTextView;
+        public TextView nameTextView;
+        public ImageView cardImageView;
         public CollectableViewHolder(@NonNull View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
-//            itemNameTextView = itemView.findViewById(R.id.LampName);
+            nameTextView = itemView.findViewById(R.id.text_view_collectable_name);
+            cardImageView = itemView.findViewById(R.id.image_view_collectable_card);
+
             itemView.setOnClickListener(v -> {
                 if(onItemClickListener != null){
                     int position = getAdapterPosition();
@@ -54,7 +61,8 @@ public class CollectableAdapter extends RecyclerView.Adapter<CollectableAdapter.
     @Override
     public void onBindViewHolder(@NonNull CollectableViewHolder holder, int position) {
         Collectable collectable = collectables.get(position);
-//        holder.itemNameTextView.setText(collectable.getName()); TODO: fix name, font and gravity
+        holder.nameTextView.setText(collectable.getName());
+        Picasso.get().load(collectable.getImgLink()).placeholder(R.drawable.card_placeholder).into(holder.cardImageView);
     }
 
     @Override

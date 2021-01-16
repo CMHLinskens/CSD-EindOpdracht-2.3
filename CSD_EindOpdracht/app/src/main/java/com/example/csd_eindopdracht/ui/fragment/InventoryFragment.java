@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.csd_eindopdracht.R;
+import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.collectable.YugiohCollectable;
 import com.example.csd_eindopdracht.ui.CollectableAdapter;
@@ -31,13 +32,14 @@ public class InventoryFragment extends Fragment {
 
         collectableRecyclerView = view.findViewById(R.id.collectable_recycler);
         collectableRecyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(getContext(), 2);
-//        inventory = Data.INSTANCE.getInventory();
+        layoutManager = new GridLayoutManager(getContext(), 3);
+        inventory = (ArrayList<Collectable>) Data.INSTANCE.getCollectables();
 
         collectableAdapter = new CollectableAdapter(inventory);
         collectableRecyclerView.setLayoutManager(layoutManager);
         collectableRecyclerView.setAdapter(collectableAdapter);
 
+        // TODO: SAVE DARK MAGICIAN
         return view;
     }
 }
