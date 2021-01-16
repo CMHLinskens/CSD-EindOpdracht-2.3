@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         // Set User Agent Value for OSM map view
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
+        // Retrieve all data
         Data.INSTANCE.retrieveAllData(getApplicationContext(), factory);
 
         // Create a notification channel for Android 8.1 and above
