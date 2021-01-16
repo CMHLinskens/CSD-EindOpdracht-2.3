@@ -3,6 +3,7 @@ package com.example.csd_eindopdracht.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -24,9 +25,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 
 import com.example.csd_eindopdracht.R;
+import com.example.csd_eindopdracht.ui.fragment.MapFragment;
+import com.example.csd_eindopdracht.util.Factory;
+import com.example.csd_eindopdracht.util.YugiohFactory;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOGTAG = MainActivity.class.getName();
+    private static final Factory factory = new YugiohFactory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         // Start locationService as an ForegroundService
         Intent locationServiceIntent = new Intent(this, LocationService.class);
         startForegroundService(locationServiceIntent);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, factory.createMapFragment());
     }
 
     /**
