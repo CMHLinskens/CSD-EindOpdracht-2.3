@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map);
+        setContentView(R.layout.activity_main);
 
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         Intent locationServiceIntent = new Intent(this, LocationService.class);
         startForegroundService(locationServiceIntent);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, factory.createMapFragment());
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, factory.createMapFragment()).commit();
+        }
     }
 
     /**

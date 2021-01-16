@@ -27,7 +27,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapView = getActivity().findViewById(R.id.osm_map);
+        mapView = view.findViewById(R.id.osm_map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setDestroyMode(false);
         mapView.setMultiTouchControls(true);
