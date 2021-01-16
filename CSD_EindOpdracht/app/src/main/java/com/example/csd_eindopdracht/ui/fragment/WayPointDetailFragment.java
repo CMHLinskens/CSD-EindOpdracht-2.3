@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.csd_eindopdracht.R;
 
-public class WaypointDetailFragment extends Fragment {
+public class WayPointDetailFragment extends Fragment {
 
     @Nullable
     @Override
