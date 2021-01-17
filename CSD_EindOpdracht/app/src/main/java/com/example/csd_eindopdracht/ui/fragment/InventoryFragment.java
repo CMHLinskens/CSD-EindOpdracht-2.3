@@ -21,6 +21,7 @@ import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.ui.CollectableAdapter;
 import com.example.csd_eindopdracht.ui.popup.AlertPopUp;
+import com.example.csd_eindopdracht.ui.popup.SpinPopUp;
 import com.example.csd_eindopdracht.util.RandomCardListener;
 
 import org.joda.time.DateTime;
@@ -122,14 +123,13 @@ public class InventoryFragment extends Fragment {
                 Data.INSTANCE.addToInventory(newCollectable);
                 Looper.prepare();
                 new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
-                // TODO add strings or replace pop up with animation
-                new AlertPopUp(getActivity(), "New Card", "You have received:\n"+newCollectable.getName());
             });
             Data.INSTANCE.setLastSpinDate();
             lastSpinDateTime = DateTime.now();
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
             isReadyToSpin = false;
             spinButton.setEnabled(false);
+            new SpinPopUp(getActivity(), 3000, 360).show();
             });
     }
 

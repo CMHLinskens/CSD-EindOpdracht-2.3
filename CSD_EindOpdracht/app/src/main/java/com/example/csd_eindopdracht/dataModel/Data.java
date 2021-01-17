@@ -63,7 +63,7 @@ public enum Data {
         dataApiManager = new YugiohDataAPIManager(factory);
 
         // Uncomment to reset all saved data.
-//        editor.clear().apply();
+        editor.clear().apply();
 
         try {
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
