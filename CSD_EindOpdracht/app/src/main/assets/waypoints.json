@@ -1,12 +1,12 @@
 [
 	{
-		"name": "stop 1",
-		"longitude": 51.5,
-		"latitude": 4.66
+		"name": "Stadhuis",
+		"longitude": 51.588750,
+		"latitude": 4.776112
 	},
 	{
-		"name": "Stop 2",
-		"longitude": 52,
-		"latitude": 4.74
+		"name": "Kloosterkazerne",
+		"longitude": 51.587722,
+		"latitude": 4.781028
 	}
 ]

@@ -14,10 +14,22 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <ImageButton
-        android:id="@+id/btn_map_my_location"
+        android:id="@+id/btn_map_guess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onMyLocationClick"
+        android:scaleType="center"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        android:background="@drawable/btn_rounded"
+        android:src="@drawable/ic_waypoint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btn_map_mylocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:scaleType="center"
         android:layout_marginBottom="24dp"
         android:background="@drawable/btn_rounded"

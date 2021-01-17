@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">CSD_EindOpdracht</string>
+    <string name="warm">Warm</string>
+    <string name="cold">Cold</string>
+    <string name="hot">Hot</string>
+    <string name="freezing">Freezing</string>
 
 </resources>
