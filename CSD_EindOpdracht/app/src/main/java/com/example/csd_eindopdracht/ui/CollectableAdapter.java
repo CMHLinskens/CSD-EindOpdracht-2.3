@@ -16,9 +16,10 @@ import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CollectableAdapter extends RecyclerView.Adapter<CollectableAdapter.CollectableViewHolder> {
-    private final ArrayList<Collectable> collectables;
+    private final List<Collectable> collectables;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener{
@@ -47,7 +48,7 @@ public class CollectableAdapter extends RecyclerView.Adapter<CollectableAdapter.
         }
     }
 
-    public CollectableAdapter(ArrayList<Collectable> collectables) {
+    public CollectableAdapter(List<Collectable> collectables) {
         this.collectables = collectables;
     }
 

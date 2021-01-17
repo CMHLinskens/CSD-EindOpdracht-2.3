@@ -99,6 +99,32 @@ public enum Data {
     }
 
     /**
+     * Removes a collectible from the inventory and saves new inventory to shared preferences
+     * @param collectable to remove collectable
+     */
+    public void removeFromInventory(Collectable collectable) {
+        if(inventory.contains(collectable)){
+            inventory.remove(collectable);
+
+            // Create a list of all the collectables in inventory
+            List<String> inventoryIDs = new ArrayList<>();
+            for(Collectable c : inventory){
+//                if(c.getName().equals(collectable.getName()))
+//                    inventory.remove(c);
+//                else
+                    inventoryIDs.add(c.getId());
+            }
+
+            // Convert to json string and save to shared preferences
+            String json = new Gson().toJson(inventoryIDs);
+            editor.putString("inventory", json);
+            editor.apply();
+        } else {
+            Log.e(LOGTAG, "ERROR: Trying to remove a non existing card from inventory.");
+        }
+    }
+
+    /**
      * Retrieves all saved collectables from shared preferences
      */
     private void retrieveInventory(){
