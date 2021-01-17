@@ -2,16 +2,21 @@ package com.example.csd_eindopdracht.dataModel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
+import com.example.csd_eindopdracht.services.dataApiManager.DataApiManager;
+import com.example.csd_eindopdracht.services.dataApiManager.YugiohDataAPIManager;
 import com.example.csd_eindopdracht.util.Factory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +25,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public enum Data {
     INSTANCE;
@@ -31,6 +40,7 @@ public enum Data {
     private List<Collectable> collectables = new ArrayList<>();
     private List<WayPoint> wayPoints = new ArrayList<>();
     private List<Collectable> inventory = new ArrayList<>();
+    private DataApiManager dataApiManager;
 
     public Factory getFactory() { return this.factory; }
     public List<Collectable> getCollectables() { return this.collectables; }
@@ -47,15 +57,13 @@ public enum Data {
         this.factory = factory;
         this.sharedPreferences = context.getSharedPreferences(Data.class.getName(), Context.MODE_PRIVATE);
         this.editor = sharedPreferences.edit();
+        dataApiManager = new YugiohDataAPIManager(factory);
+
+        // Uncomment to reset all saved data.
+//        editor.clear().apply();
 
         try {
-            // Make JSONArrays from the json strings
-            JSONArray collectablesJsonArray = new JSONArray(getJsonFromAssets(context, "collectables.json"));
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
-
-            for(int i = 0; i < collectablesJsonArray.length(); i++){
-                collectables.add(factory.createCollectable(collectablesJsonArray.getJSONObject(i)));
-            }
 
             for(int j = 0; j < wayPointsJsonArray.length(); j++){
                 wayPoints.add(factory.createCachePoint(wayPointsJsonArray.getJSONObject(j)));
@@ -76,13 +84,13 @@ public enum Data {
         inventory.add(collectable);
 
         // Create a list of all the collectables in inventory
-        List<String> inventoryNames = new ArrayList<>();
+        List<String> inventoryIDs = new ArrayList<>();
         for(Collectable c : inventory){
-            inventoryNames.add(c.getName());
+            inventoryIDs.add(c.getId());
         }
 
         // Convert to json string and save to shared preferences
-        String json = new Gson().toJson(inventoryNames);
+        String json = new Gson().toJson(inventoryIDs);
         editor.putString("inventory", json);
         editor.apply();
     }
@@ -93,17 +101,10 @@ public enum Data {
     private void retrieveInventory(){
         // Get string from shared preferences and convert to string list
         String json = sharedPreferences.getString("inventory", "[]");
-        Type listNamesType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<String> inventoryNames = new Gson().fromJson(json, listNamesType);
+        Type listIDType = new TypeToken<ArrayList<String>>() {}.getType();
+        List<String> inventoryIDs = new Gson().fromJson(json, listIDType);
 
-        // Search for matching collectable and add to inventory
-        for(String name : inventoryNames){
-            for(Collectable c : collectables){
-                if(name.equals(c.getName())){
-                    inventory.add(c);
-                }
-            }
-        }
+        getCardsWithID(inventoryIDs);
     }
 
     /**
@@ -148,5 +149,61 @@ public enum Data {
      */
     public void setLastSpinDate() {
         sharedPreferences.edit().putString("lastSpin", DateTime.now().toString()).apply();
+    }
+
+    /**
+     * Retrieves the cards from the database with the given IDs
+     * @param IDs cards to retrieve
+     */
+    public void getCardsWithID(List<String> IDs){
+        dataApiManager.getCardsWithID(IDs, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(LOGTAG, "Error: callback in method getCardsWithID in Data.java resulted in failure. " + e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                JSONObject responseJson;
+                try{
+                    responseJson = new JSONObject(response.body().string());
+                    JSONArray responseArray = responseJson.getJSONArray("data");
+
+                    for(int i = 0; i < responseArray.length(); i++){
+                        Collectable collectable = factory.createCollectable(responseArray.getJSONObject(i));
+                        if(collectable != null)
+                            inventory.add(collectable);
+                    }
+                } catch(JSONException | IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void getRandomCardWithLevel(int level){
+        dataApiManager.getCardsWithLevel(level, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(LOGTAG, "Error: fail in data callback " + e.getMessage());
+            }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                new Thread(() -> {
+                    JSONObject responseJson;
+                    try{
+                        responseJson = new JSONObject(response.body().string());
+                        JSONArray responseArray = responseJson.getJSONArray("data");
+
+                        for(int i = 0; i < responseArray.length(); i++){
+                            Collectable collectable = factory.createCollectable(responseArray.getJSONObject(i));
+                            if(collectable != null)
+                                collectables.add(collectable);
+                        }
+                    } catch(JSONException | IOException e){
+                        e.printStackTrace();
+                    }
+                }).start();
+            }
+        });
     }
 }

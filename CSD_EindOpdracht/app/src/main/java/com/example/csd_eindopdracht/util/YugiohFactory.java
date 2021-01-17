@@ -14,14 +14,17 @@ import org.osmdroid.util.GeoPoint;
 public class YugiohFactory extends Factory{
 
     @Override
-    public Collectable createCollectable(String name, String imgLink) {
-        return new YugiohCollectable(name,  imgLink);
+    public Collectable createCollectable(String name, String imgLink, int level, String id) {
+        return new YugiohCollectable(name,  imgLink, level, id);
     }
 
     @Override
     public Collectable createCollectable(JSONObject jsonObject) {
         try {
-            return new YugiohCollectable(jsonObject.getString("name"), jsonObject.getString("imgLink"));
+            return new YugiohCollectable(jsonObject.getString("name"),
+                    jsonObject.getJSONArray("card_images").getJSONObject(0).getString("image_url"),
+                    jsonObject.getInt("level"),
+                    String.valueOf(jsonObject.getInt("id")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
