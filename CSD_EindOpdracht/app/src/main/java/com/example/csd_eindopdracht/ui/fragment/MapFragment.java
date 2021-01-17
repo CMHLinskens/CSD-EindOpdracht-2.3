@@ -30,6 +30,7 @@ import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
 import com.example.csd_eindopdracht.services.LocationService;
 import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
 import com.example.csd_eindopdracht.services.ServerManager;
+import com.example.csd_eindopdracht.ui.popup.AlertPopUp;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -140,6 +141,7 @@ public class MapFragment extends Fragment {
      * @param wayPoint selected way point
      */
     private void startRoute(WayPoint wayPoint) {
+        // TODO make check to see if we are already standing on the selected way point
         selectedWayPoint = wayPoint;
         getRouteToPoint(wayPoint.getLocation());
     }
@@ -187,7 +189,7 @@ public class MapFragment extends Fragment {
     private void outOfBounds() {
         completionPoint = null;
         guessButton.setVisibility(View.GONE);
-        Toast.makeText(getContext(), getString(R.string.out_of_bounds), Toast.LENGTH_LONG).show();
+        new AlertPopUp(getActivity(),getString(R.string.out_of_bounds_title), getString(R.string.out_of_bounds_message)).show();
         getRouteToPoint(selectedWayPoint.getLocation());
         removeSearchAreaFromMap();
     }
@@ -203,8 +205,12 @@ public class MapFragment extends Fragment {
             removeLineFromMap();
             Log.d(LOGTAG, "Reached way point");
             completionPoint = event.getCompletionPoint();
-            // TODO show pop-up with explanation
+
+            // Make guess button appear on screen
             guessButton.setVisibility(View.VISIBLE);
+
+            // Show pop up with explanation
+            new AlertPopUp(getActivity(),getString(R.string.reached_popup_title), getString(R.string.reached_popup_message)).show();
 
             // Draw search area on the map
             searchArea = createCircleForMap(selectedWayPoint.getLocation(), LocationService.DISTANCE_THRESHOLD);

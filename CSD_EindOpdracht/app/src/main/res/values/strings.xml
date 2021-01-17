@@ -4,6 +4,9 @@
     <string name="cold">Cold</string>
     <string name="hot">Hot</string>
     <string name="freezing">Freezing</string>
-    <string name="out_of_bounds">You have walked out of bounds. Return or you will be terminated in 5 seconds.</string>
-
+    <string name="confirm">OK</string>
+    <string name="reached_popup_title">Reached Way Point</string>
+    <string name="reached_popup_message">A button appeared in the bottom left corner. Use this to guess the location of the cache by standing on the right point within the circle.</string>
+    <string name="out_of_bounds_title">Out Of Bounds</string>
+    <string name="out_of_bounds_message">You have walked out of bounds. Please return to the way point</string>
 </resources>
