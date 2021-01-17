@@ -27,10 +27,13 @@ public class SpinPopUp extends Dialog {
 
         ImageView wheel = findViewById(R.id.image_spin_wheel);
 
+        // Create the rotate animation with desired parameters
         RotateAnimation anim = new RotateAnimation(0, degrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         anim.setDuration(duration);
         anim.setRepeatCount(0);
+        anim.setFillAfter(true);
 
+        // Start animation
         wheel.startAnimation(anim);
     }
 }

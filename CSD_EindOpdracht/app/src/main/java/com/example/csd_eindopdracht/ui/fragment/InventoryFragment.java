@@ -38,6 +38,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class InventoryFragment extends Fragment {
+    private static final String LOGTAG = InventoryFragment.class.getName();
+
     private RecyclerView collectableRecyclerView;
     private CollectableAdapter collectableAdapter;
     private GridLayoutManager layoutManager;
@@ -116,8 +118,6 @@ public class InventoryFragment extends Fragment {
 
 
         spinButton.setOnClickListener(v -> {
-//            int randomID = new Random().nextInt(Data.INSTANCE.getCollectables().size() - 1);
-//            Collectable newCollectable = Data.INSTANCE.getCollectables().get(randomID);
             int randomLevel = new Random().nextInt(12) + 1;
             Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
                 Data.INSTANCE.addToInventory(newCollectable);
@@ -129,7 +129,8 @@ public class InventoryFragment extends Fragment {
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
             isReadyToSpin = false;
             spinButton.setEnabled(false);
-            new SpinPopUp(getActivity(), 3000, 360).show();
+            Log.d(LOGTAG, "Level " + randomLevel);
+            new SpinPopUp(getActivity(), 3000, 360 + randomLevel * 30).show();
             });
     }
 
