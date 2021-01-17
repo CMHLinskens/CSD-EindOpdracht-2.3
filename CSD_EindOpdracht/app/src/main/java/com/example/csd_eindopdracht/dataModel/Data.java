@@ -131,7 +131,7 @@ public enum Data {
     }
 
     /**
-     * gets the last inventory spin date
+     * Gets the last inventory spin date
      * @return localDateTime of last spin date
      */
     public DateTime getLastSpinDate() {
@@ -140,5 +140,13 @@ public enum Data {
             return DateTime.parse(parsableDateTime);
         else
             return null;
+    }
+
+    /**
+     * Sets the last spin date to the current time
+     * and stores it in the shared preferences
+     */
+    public void setLastSpinDate() {
+        sharedPreferences.edit().putString("lastSpin", DateTime.now().toString()).apply();
     }
 }

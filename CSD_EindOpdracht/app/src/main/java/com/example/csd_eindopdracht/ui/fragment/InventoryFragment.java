@@ -1,6 +1,9 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +23,29 @@ import com.example.csd_eindopdracht.ui.CollectableAdapter;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.PeriodFormat;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class InventoryFragment extends Fragment {
     private RecyclerView collectableRecyclerView;
     private CollectableAdapter collectableAdapter;
     private GridLayoutManager layoutManager;
     private ArrayList<Collectable> inventory;
+    private DateTime lastSpinDateTime;
+    private DateTime currentDateTime;
+    private Period period;
+    private boolean isReadyToSpin;
+    private Thread timerTextThread;
+    private TimerTask timerTask;
+    private Timer timer;
 
     @Nullable
     @Override
@@ -45,32 +61,76 @@ public class InventoryFragment extends Fragment {
         collectableRecyclerView.setLayoutManager(layoutManager);
         collectableRecyclerView.setAdapter(collectableAdapter);
 
-        TextView timerTextView = view.findViewById(R.id.text_view_inventory_timer);
-        initializeSpinButton(view);
+        lastSpinDateTime = Data.INSTANCE.getLastSpinDate();
+//        lastSpinDateTime = DateTime.parse("2021-01-13T10:56:15.819+01:00");
+        currentDateTime = DateTime.now();
 
+        if (lastSpinDateTime != null) {
+            period = new Period(lastSpinDateTime, currentDateTime);
+            // Check if 20 hours have passed
+            isReadyToSpin = getTotalHours(period) > 20;
+        }
+
+        initializeSpinButton(view);
+        initializeTimerTextView(view);
 
         // TODO: SAVE DARK MAGICIAN
         return view;
     }
 
-    private void initializeSpinButton(View view){
+    private void initializeTimerTextView(View view) {
+        TextView timerTextView = view.findViewById(R.id.text_view_inventory_timer);
+
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                // Every tick, the textView will display the remaining time in hh:mm:ss
+                period = new Period(lastSpinDateTime, currentDateTime); // TODO: fix timer seconds
+                Period nextTimePeriod = new Period(lastSpinDateTime.plusHours(20).minusHours(getTotalHours(period)), DateTime.now());
+                String formattedTime = new PeriodFormatterBuilder().minimumPrintedDigits(2).printZeroAlways().appendHours().appendSeparator(":").appendMinutes().appendSeparator(":").appendSeconds().toFormatter().print(nextTimePeriod);
+                String nextSpinTime = formattedTime.replaceAll("-", "");
+                new Handler(Looper.getMainLooper()).post(() -> timerTextView.setText("NEXT SPIN: " + nextSpinTime)); // TODO: use string resources
+            }
+        };
+        timer = new Timer();
+
+        if (!isReadyToSpin)
+            timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        else
+            timerTextView.setText("READY"); // TODO: use string resources
+
+
+    }
+
+    private void initializeSpinButton(View view) {
         Button spinButton = view.findViewById(R.id.btn_inventory_spin);
 
-        DateTime lastSpinDateTime = Data.INSTANCE.getLastSpinDate();
-        DateTime currentDateTime = DateTime.now();
 
-        if (lastSpinDateTime != null) {
-            // If 20 hours have passed since last spin, enable the button
-            Period period = new Period(lastSpinDateTime, currentDateTime);
-            spinButton.setEnabled(period.getHours() > 20);
-        }
+        // If 20 hours have passed since last spin, enable the button
+        spinButton.setEnabled(isReadyToSpin);
+
 
         spinButton.setOnClickListener(v -> {
 
             int randomID = new Random().nextInt(Data.INSTANCE.getCollectables().size() - 1);
             Collectable newCollectable = Data.INSTANCE.getCollectables().get(randomID);
             Data.INSTANCE.addToInventory(newCollectable);
-            // TODO: refresh recyclerView
+            collectableAdapter.notifyDataSetChanged();
+            Data.INSTANCE.setLastSpinDate();
+            lastSpinDateTime = DateTime.now();
+            timer.scheduleAtFixedRate(timerTask, 0, 1000);
+            isReadyToSpin = false;
+            spinButton.setEnabled(false);
         });
+    }
+
+    private int getTotalHours(Period period){
+        return period.getHours() + period.getDays() * 24;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        timer.cancel();
     }
 }
