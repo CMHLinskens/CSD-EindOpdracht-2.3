@@ -25,9 +25,11 @@ import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.dataModel.ors.Route;
 import com.example.csd_eindopdracht.dataModel.ors.TravelType;
+import com.example.csd_eindopdracht.dataModel.wayPoint.CachePoint;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
 import com.example.csd_eindopdracht.services.LocationService;
 import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
+import com.example.csd_eindopdracht.services.ServerManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +50,7 @@ import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -117,7 +120,7 @@ public class MapFragment extends Fragment {
         for(WayPoint wp : Data.INSTANCE.getWayPoints()){
             Marker marker = new Marker(mapView);
             marker.setPosition(wp.getLocation());
-            Drawable drawable = DrawableCompat.wrap(AppCompatResources.getDrawable(getContext(), R.drawable.ic_waypoint));
+            Drawable drawable = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_waypoint)));
             drawable.setTint(Color.BLACK);
             marker.setIcon(drawable);
             marker.setOnMarkerClickListener((marker1, mapView) -> {
@@ -249,8 +252,10 @@ public class MapFragment extends Fragment {
     private void checkGuess() {
         if(completionPoint != null) {
             if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD) {
-                Log.d(LOGTAG, "Completed ");
+                Log.d(LOGTAG, "Completed \nReceived collectable: " + ServerManager.INSTANCE.getCachePointCollectable((CachePoint) selectedWayPoint).getName());
+                // TODO add to inventory
                 // TODO show completion screen
+                stopRoute();
             } else if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD * 2) {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
             } else if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD * 3){
