@@ -32,6 +32,7 @@ import com.example.csd_eindopdracht.services.LocationService;
 import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
 import com.example.csd_eindopdracht.services.ServerManager;
 import com.example.csd_eindopdracht.ui.popup.AlertPopUp;
+import com.example.csd_eindopdracht.util.RandomCardListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +55,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -323,13 +325,11 @@ public class MapFragment extends Fragment {
     private void checkGuess() {
         if(completionPoint != null) {
             if (LocationService.checkIfInBounds(myLocation, completionPoint, 1)) {
-                Collectable collectable = ServerManager.INSTANCE.getCachePointCollectable((CachePoint) selectedWayPoint);
-                Log.d(LOGTAG, "Completed \nReceived collectable: " + collectable.getName());
-                // TODO add to inventory
-
+                Data.INSTANCE.getRandomCardWithLevel((new Random().nextInt(12) + 1), newCollectable -> {
+                    Log.d(LOGTAG, "Completed \nReceived collectable: " + newCollectable.getName());
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(newCollectable)).commit();
+                });
                 stopRoute();
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(collectable)).commit();
-
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 2)) {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 3)) {

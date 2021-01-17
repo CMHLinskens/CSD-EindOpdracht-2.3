@@ -79,6 +79,7 @@ public class RewardFragment extends Fragment {
                 if (yourCollectable != null)
                     updateYourCollectable(view);
             });
+            chooseCardPopUp.show();
         });
     }
 
