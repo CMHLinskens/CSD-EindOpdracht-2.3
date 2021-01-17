@@ -84,7 +84,7 @@ public enum Data {
      * @param collectable new obtained collectable
      */
     public void addToInventory(Collectable collectable) {
-        inventory.add(collectable);
+        inventory.add(0, collectable);
 
         // Create a list of all the collectables in inventory
         List<String> inventoryIDs = new ArrayList<>();
