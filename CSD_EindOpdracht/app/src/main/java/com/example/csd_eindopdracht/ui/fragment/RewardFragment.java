@@ -18,8 +18,6 @@ import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.ui.popup.ChooseCardPopUp;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 public class RewardFragment extends Fragment {
 
     private Collectable yourCollectable;
@@ -91,7 +89,7 @@ public class RewardFragment extends Fragment {
             Data.INSTANCE.removeFromInventory(yourCollectable);
             Data.INSTANCE.addToInventory(cachedCollectable);
             // TODO: add rarity bonus
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit(); // TODO: use factory
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).commit();
         });
     }
 
@@ -99,7 +97,7 @@ public class RewardFragment extends Fragment {
         refuseButton = view.findViewById(R.id.btn_reward_refuse);
         refuseButton.setOnClickListener(v -> {
             // TODO: add alert pop-up: are you sure you refuse this trade?
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit(); // TODO: use factory
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).commit();
         });
     }
 }
