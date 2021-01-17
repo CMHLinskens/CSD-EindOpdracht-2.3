@@ -28,6 +28,8 @@ public class ChooseCardPopUp extends Dialog {
         this.collectable = collectable;
     }
 
+    public Collectable getCollectable() { return this.collectable; }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +38,14 @@ public class ChooseCardPopUp extends Dialog {
 
         RecyclerView collectableRecyclerView = findViewById(R.id.recycler_choose_card_popup);
         collectableRecyclerView.setHasFixedSize(true);
-        ArrayList<Collectable> inventory = (ArrayList<Collectable>) Data.INSTANCE.getInventory();
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
 
-        CollectableAdapter collectableAdapter = new CollectableAdapter(inventory);
+        CollectableAdapter collectableAdapter = new CollectableAdapter(Data.INSTANCE.getInventory());
         collectableRecyclerView.setLayoutManager(layoutManager);
         collectableRecyclerView.setAdapter(collectableAdapter);
 
         collectableAdapter.setOnItemClickListener(position -> {
-            collectable = inventory.get(position);
+            collectable = Data.INSTANCE.getInventory().get(position);
             dismiss();
         });
 

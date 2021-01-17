@@ -76,7 +76,8 @@ public class RewardFragment extends Fragment {
         ChooseCardPopUp chooseCardPopUp = new ChooseCardPopUp(getContext(), yourCollectable);
         chooseCardButton.setOnClickListener(v -> {
             chooseCardPopUp.setOnDismissListener(dialog -> {
-                if (yourCollectable != null)
+                if (chooseCardPopUp.getCollectable() != null)
+                    yourCollectable = chooseCardPopUp.getCollectable();
                     updateYourCollectable(view);
             });
             chooseCardPopUp.show();
@@ -87,9 +88,8 @@ public class RewardFragment extends Fragment {
         acceptButton = view.findViewById(R.id.btn_reward_accept);
         acceptButton.setOnClickListener(v -> {
             // TODO: add alert pop-up: are you sure you accept this trade?
-            List<Collectable> inventory = Data.INSTANCE.getInventory();
-            inventory.remove(yourCollectable);
-            inventory.add(cachedCollectable);
+            Data.INSTANCE.removeFromInventory(yourCollectable);
+            Data.INSTANCE.addToInventory(cachedCollectable);
             // TODO: add rarity bonus
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit(); // TODO: use factory
         });
