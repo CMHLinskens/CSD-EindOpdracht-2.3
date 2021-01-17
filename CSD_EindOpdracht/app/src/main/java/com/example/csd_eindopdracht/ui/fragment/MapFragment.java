@@ -85,7 +85,8 @@ public class MapFragment extends Fragment {
         }
 
         // Subscribe to EventBus
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
         mapView = view.findViewById(R.id.osm_map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);

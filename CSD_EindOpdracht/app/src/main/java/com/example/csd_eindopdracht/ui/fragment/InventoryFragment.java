@@ -69,6 +69,8 @@ public class InventoryFragment extends Fragment {
             period = new Period(lastSpinDateTime, currentDateTime);
             // Check if 20 hours have passed
             isReadyToSpin = getTotalHours(period) > 20;
+        } else {
+            isReadyToSpin = true;
         }
 
         initializeSpinButton(view);
