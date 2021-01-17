@@ -117,7 +117,7 @@ public class InventoryFragment extends Fragment {
         spinButton.setOnClickListener(v -> {
 //            int randomID = new Random().nextInt(Data.INSTANCE.getCollectables().size() - 1);
 //            Collectable newCollectable = Data.INSTANCE.getCollectables().get(randomID);
-            int randomLevel = new Random().nextInt(7) + 3;
+            int randomLevel = new Random().nextInt(12) + 1;
             Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
                 Data.INSTANCE.addToInventory(newCollectable);
                 Looper.prepare();

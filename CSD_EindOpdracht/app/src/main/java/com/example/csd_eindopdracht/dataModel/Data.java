@@ -63,7 +63,7 @@ public enum Data {
         dataApiManager = new YugiohDataAPIManager(factory);
 
         // Uncomment to reset all saved data.
-        editor.clear().apply();
+//        editor.clear().apply();
 
         try {
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
@@ -107,7 +107,8 @@ public enum Data {
         Type listIDType = new TypeToken<ArrayList<String>>() {}.getType();
         List<String> inventoryIDs = new Gson().fromJson(json, listIDType);
 
-        getCardsWithID(inventoryIDs);
+        if(inventoryIDs.size() > 0)
+            getCardsWithID(inventoryIDs);
     }
 
     /**
