@@ -9,4 +9,7 @@
     <string name="reached_popup_message">A button appeared in the bottom left corner. Use this to guess the location of the cache by standing on the right point within the circle.</string>
     <string name="out_of_bounds_title">Out Of Bounds</string>
     <string name="out_of_bounds_message">You have walked out of bounds. Please return to the way point</string>
+    <string name="title_inventory">Inventory</string>
+    <string name="button_daily_spin">Daily spin</string>
+
 </resources>

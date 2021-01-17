@@ -60,7 +60,7 @@ import okhttp3.Response;
 
 public class MapFragment extends Fragment {
     private static final String LOGTAG = MapFragment.class.getName();
-
+    private Button button;
     private MapView mapView = null;
     private IMapController mapController = null;
     private final GeoPoint myLocation = new GeoPoint(0,0);
@@ -108,6 +108,11 @@ public class MapFragment extends Fragment {
             mapView.invalidate();
         });
 
+        button = view.findViewById(R.id.btn_map_inventory);
+        button.setOnClickListener(v -> {
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new InventoryFragment()).addToBackStack(null).commit(); // TODO: use factory
+        });
+        
         guessButton = view.findViewById(R.id.btn_map_guess);
         guessButton.setOnClickListener(view1 -> checkGuess());
 
