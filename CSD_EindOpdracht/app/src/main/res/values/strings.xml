@@ -11,5 +11,13 @@
     <string name="out_of_bounds_message">You have walked out of bounds. Please return to the way point</string>
     <string name="title_inventory">Inventory</string>
     <string name="button_daily_spin">Daily spin</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="cache_reached">You have reached the cache point!</string>
+    <string name="your_card">Your card</string>
+    <string name="cached_card">Cached card</string>
+    <string name="pick_a_card">Pick a card</string>
+    <string name="rarity_bonus_100_points">Rarity bonus: 100 points</string>
+    <string name="accept">Accept</string>
+    <string name="refuse">Refuse</string>
 
 </resources>
