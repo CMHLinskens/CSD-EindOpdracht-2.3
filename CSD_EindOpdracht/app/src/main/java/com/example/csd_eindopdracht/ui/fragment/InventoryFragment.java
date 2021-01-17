@@ -43,7 +43,6 @@ public class InventoryFragment extends Fragment {
     private DateTime currentDateTime;
     private Period period;
     private boolean isReadyToSpin;
-    private Thread timerTextThread;
     private TimerTask timerTask;
     private Timer timer;
 

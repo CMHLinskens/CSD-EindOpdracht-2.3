@@ -14,6 +14,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
+import kotlin.NotImplementedError;
+
 public abstract class Factory {
 
     public abstract Collectable createCollectable(String name, String imgLink);
@@ -30,7 +32,7 @@ public abstract class Factory {
     }
 
     public Fragment createRewardFragment(){
-        return new RewardFragment();
+        throw new NotImplementedError();
     }
 
     public Fragment createMapFragment(){

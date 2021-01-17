@@ -19,5 +19,8 @@
     <string name="rarity_bonus_100_points">Rarity bonus: 100 points</string>
     <string name="accept">Accept</string>
     <string name="refuse">Refuse</string>
+    <string name="choose_your_card">Choose your card</string>
+    <string name="rarity_bonus">\"Rarity Bonus: \"</string>
+    <string name="points">Points</string>
 
 </resources>

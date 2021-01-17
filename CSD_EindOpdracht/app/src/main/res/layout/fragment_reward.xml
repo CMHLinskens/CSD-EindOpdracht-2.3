@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/text_view_inventory_title"
+        android:id="@+id/text_view_reward_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/congratulations"
@@ -24,7 +24,7 @@
         android:text="@string/cache_reached"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_inventory_title"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_reward_title"
         android:fontFamily="@font/yugioh_font"/>
 
     <LinearLayout
@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
+                android:id="@+id/btn_reward_choose"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/yugioh_font"
@@ -95,7 +96,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_view_reward_rarity_bonus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -116,7 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@id/text_view_reward_rarity_bonus">
 
         <Button
             android:id="@+id/btn_reward_accept"
