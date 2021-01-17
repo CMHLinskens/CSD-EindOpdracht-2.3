@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.example.csd_eindopdracht.BuildConfig;
 import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.Data;
+import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.ors.Route;
 import com.example.csd_eindopdracht.dataModel.ors.TravelType;
 import com.example.csd_eindopdracht.dataModel.wayPoint.CachePoint;
@@ -322,10 +323,13 @@ public class MapFragment extends Fragment {
     private void checkGuess() {
         if(completionPoint != null) {
             if (LocationService.checkIfInBounds(myLocation, completionPoint, 1)) {
-                Log.d(LOGTAG, "Completed \nReceived collectable: " + ServerManager.INSTANCE.getCachePointCollectable((CachePoint) selectedWayPoint).getName());
+                Collectable collectable = ServerManager.INSTANCE.getCachePointCollectable((CachePoint) selectedWayPoint);
+                Log.d(LOGTAG, "Completed \nReceived collectable: " + collectable.getName());
                 // TODO add to inventory
-                // TODO show completion screen
+
                 stopRoute();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(collectable)).commit();
+
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 2)) {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 3)) {
