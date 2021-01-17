@@ -3,12 +3,14 @@ package com.example.csd_eindopdracht.dataModel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.Window;
 
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
 import com.example.csd_eindopdracht.services.dataApiManager.DataApiManager;
 import com.example.csd_eindopdracht.services.dataApiManager.YugiohDataAPIManager;
 import com.example.csd_eindopdracht.util.Factory;
+import com.example.csd_eindopdracht.util.RandomCardListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,7 +63,7 @@ public enum Data {
         dataApiManager = new YugiohDataAPIManager(factory);
 
         // Uncomment to reset all saved data.
-//        editor.clear().apply();
+        editor.clear().apply();
 
         try {
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
@@ -162,7 +165,7 @@ public enum Data {
                 Log.e(LOGTAG, "Error: callback in method getCardsWithID in Data.java resulted in failure. " + e.getMessage());
             }
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 JSONObject responseJson;
                 try{
                     responseJson = new JSONObject(response.body().string());
@@ -174,33 +177,37 @@ public enum Data {
                             inventory.add(collectable);
                     }
                 } catch(JSONException | IOException e){
-                    e.printStackTrace();
+                    Log.e(LOGTAG, "ERROR: JSON or IO Exception in getCardsWithID in Data.java " + e.getMessage());
                 }
             }
         });
     }
 
-    public void getRandomCardWithLevel(int level){
+    public void getRandomCardWithLevel(int level, RandomCardListener listener){
         dataApiManager.getCardsWithLevel(level, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.e(LOGTAG, "Error: fail in data callback " + e.getMessage());
             }
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
                 new Thread(() -> {
                     JSONObject responseJson;
                     try{
                         responseJson = new JSONObject(response.body().string());
                         JSONArray responseArray = responseJson.getJSONArray("data");
 
+                        List<Collectable> cardList = new ArrayList<>();
                         for(int i = 0; i < responseArray.length(); i++){
                             Collectable collectable = factory.createCollectable(responseArray.getJSONObject(i));
                             if(collectable != null)
-                                collectables.add(collectable);
+                                cardList.add(collectable);
                         }
+
+                        Collectable randomCard = cardList.get(new Random().nextInt(cardList.size()));
+                        listener.onRandomCardReceived(randomCard);
                     } catch(JSONException | IOException e){
-                        e.printStackTrace();
+                        Log.e(LOGTAG, "ERROR: JSON or IO Exception in getRandomCardWithLevel in Data.java " + e.getMessage());
                     }
                 }).start();
             }
