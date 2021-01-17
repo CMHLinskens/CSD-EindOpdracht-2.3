@@ -1,10 +1,7 @@
 package com.example.csd_eindopdracht.dataModel;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.JsonToken;
-import android.util.Log;
 
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
@@ -12,14 +9,15 @@ import com.example.csd_eindopdracht.util.Factory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,7 +130,15 @@ public enum Data {
         return jsonString;
     }
 
-    public List<Collectable> getCollectables() {
-        return collectables;
+    /**
+     * gets the last inventory spin date
+     * @return localDateTime of last spin date
+     */
+    public DateTime getLastSpinDate() {
+        String parsableDateTime = sharedPreferences.getString("lastSpin", "");
+        if (!parsableDateTime.equals(""))
+            return DateTime.parse(parsableDateTime);
+        else
+            return null;
     }
 }
