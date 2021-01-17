@@ -80,13 +80,6 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        if(savedInstanceState != null){
-            WayPoint wayPoint = (WayPoint) savedInstanceState.get("wayPoint");
-            if(wayPoint != null){
-                startRoute(wayPoint);
-            }
-        }
-
         // Subscribe to EventBus
         if(!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
@@ -102,6 +95,9 @@ public class MapFragment extends Fragment {
 
         myLocationMarker = new Marker(mapView);
         myLocationMarker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_location, null));
+        if(myLocation == null){
+
+        }
         myLocationMarker.setPosition(myLocation);
         mapView.getOverlays().add(myLocationMarker);
 
@@ -136,8 +132,12 @@ public class MapFragment extends Fragment {
             marker.setIcon(drawable);
             marker.setOnMarkerClickListener((marker1, mapView) -> {
                 Log.d(LOGTAG, "Clicked on way point: " + wp.getName());
-                startRoute(wp);
-                // TODO show way point detail screen
+                if(selectedWayPoint == null)
+                    startRoute(wp);
+                else if (selectedWayPoint != wp)
+                    startRoute(wp);
+                else
+                    stopRoute();
                 return false;
             });
             mapView.getOverlays().add(marker);

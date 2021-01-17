@@ -40,13 +40,11 @@ public enum Data {
     private Factory factory = null;
     private SharedPreferences sharedPreferences = null;
     private SharedPreferences.Editor editor = null;
-    private List<Collectable> collectables = new ArrayList<>();
     private List<WayPoint> wayPoints = new ArrayList<>();
     private List<Collectable> inventory = new ArrayList<>();
     private DataApiManager dataApiManager;
 
     public Factory getFactory() { return this.factory; }
-    public List<Collectable> getCollectables() { return this.collectables; }
     public List<WayPoint> getWayPoints() { return this.wayPoints; }
     public List<Collectable> getInventory() { return this.inventory; }
 
@@ -109,9 +107,6 @@ public enum Data {
             // Create a list of all the collectables in inventory
             List<String> inventoryIDs = new ArrayList<>();
             for(Collectable c : inventory){
-//                if(c.getName().equals(collectable.getName()))
-//                    inventory.remove(c);
-//                else
                     inventoryIDs.add(c.getId());
             }
 
