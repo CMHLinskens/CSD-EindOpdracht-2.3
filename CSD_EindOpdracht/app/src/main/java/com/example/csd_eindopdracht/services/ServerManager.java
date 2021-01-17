@@ -17,7 +17,7 @@ public enum ServerManager {
      * @return collectable stored in the cache point
      */
     public Collectable getCachePointCollectable(CachePoint cachePoint){
-        return Data.INSTANCE.getCollectables().get(random.nextInt(Data.INSTANCE.getCollectables().size() - 1));
+        return Data.INSTANCE.getCollectables().get(random.nextInt(Data.INSTANCE.getCollectables().size()));
         // TODO actually look up and return the stored collectable
     }
 }

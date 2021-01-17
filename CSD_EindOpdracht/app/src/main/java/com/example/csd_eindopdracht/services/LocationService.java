@@ -30,7 +30,9 @@ public class LocationService extends Service {
     private static final int LOCATION_INTERVAL = 2500;
     private static final float LOCATION_DISTANCE = 10f;
     LocationListener locationListener = null;
-    private static final double DISTANCE_THRESHOLD = 40;
+    public static final double DISTANCE_THRESHOLD = 40;
+    private static final double COMPLETION_THRESHOLD = 5;
+
 
     public static class WayPointReachedEvent {
         WayPoint wayPoint;
@@ -52,13 +54,13 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            EventBus.getDefault().post(location);
             for(WayPoint wp : Data.INSTANCE.getWayPoints()){
                 double distance = wp.getLocation().distanceToAsDouble(new GeoPoint(location.getLatitude(), location.getLongitude()));
                 if(distance <= DISTANCE_THRESHOLD) {
                     EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
                 }
             }
+            EventBus.getDefault().post(location);
         }
 
         @Override
@@ -80,6 +82,26 @@ public class LocationService extends Service {
     private GeoPoint getRandomCompletionPoint(GeoPoint location) {
         // TODO calculate a random point within a radius of 40 meters of location
         return location;
+    }
+
+    /**
+     * Checks if point 1 and 2 are within the DISTANCE_THRESHOLD
+     * @param point1 first point
+     * @param point2 second point
+     * @return result as boolean
+     */
+    public static boolean checkIfInBounds(GeoPoint point1, GeoPoint point2) {
+        return point1.distanceToAsDouble(point2) <= DISTANCE_THRESHOLD;
+    }
+
+    /**
+     * Checks if point 1 and 2 are within the COMPLETION_THRESHOLD * modifier
+     * @param point1 first point
+     * @param point2 second point
+     * @return result as boolean
+     */
+    public static boolean checkIfInBounds(GeoPoint point1, GeoPoint point2, int modifier){
+        return point1.distanceToAsDouble(point2) <= (COMPLETION_THRESHOLD * modifier);
     }
 
     @Nullable

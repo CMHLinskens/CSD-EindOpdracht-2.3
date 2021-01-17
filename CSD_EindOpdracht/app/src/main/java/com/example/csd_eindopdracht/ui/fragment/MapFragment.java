@@ -44,6 +44,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 
@@ -67,8 +68,8 @@ public class MapFragment extends Fragment {
     private WayPoint selectedWayPoint = null;
     private GeoPoint completionPoint = null;
     private ImageButton guessButton = null;
-    private static final double COMPLETION_THRESHOLD = 5;
     private Polyline line = null;
+    private Polygon searchArea = null;
 
     @Nullable
     @Override
@@ -148,7 +149,11 @@ public class MapFragment extends Fragment {
      */
     private void stopRoute(){
         removeLineFromMap();
-        completionPoint = null;
+        removeSearchAreaFromMap();
+        if(completionPoint != null) {
+            completionPoint = null;
+            guessButton.setVisibility(View.GONE);
+        }
         selectedWayPoint = null;
     }
 
@@ -161,12 +166,30 @@ public class MapFragment extends Fragment {
         myLocation.setLatitude(location.getLatitude());
         myLocation.setLongitude(location.getLongitude());
 
-        if(selectedWayPoint != null){
+        // If we have a route but we have not reached it yet, update the route
+        if(selectedWayPoint != null && completionPoint == null){
             getRouteToPoint(selectedWayPoint.getLocation());
+        // If we have a route and we have reached it, check if we are still in bounds
+        } else if(selectedWayPoint != null){
+            if(!LocationService.checkIfInBounds(myLocation, selectedWayPoint.getLocation())) {
+                outOfBounds();
+            }
         }
 
+        // Update my location marker
         myLocationMarker.setPosition(myLocation);
         mapView.invalidate();
+    }
+
+    /**
+     * Reset the completion point and let the user know he/she has walked out of the zone
+     */
+    private void outOfBounds() {
+        completionPoint = null;
+        guessButton.setVisibility(View.GONE);
+        Toast.makeText(getContext(), getString(R.string.out_of_bounds), Toast.LENGTH_LONG).show();
+        getRouteToPoint(selectedWayPoint.getLocation());
+        removeSearchAreaFromMap();
     }
 
     /**
@@ -175,11 +198,18 @@ public class MapFragment extends Fragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWayPointReachedEvent(LocationService.WayPointReachedEvent event) {
+        if(selectedWayPoint == null || completionPoint != null) { return; }
         if(event.getWayPoint().getName().equals(selectedWayPoint.getName())) {
+            removeLineFromMap();
             Log.d(LOGTAG, "Reached way point");
             completionPoint = event.getCompletionPoint();
             // TODO show pop-up with explanation
             guessButton.setVisibility(View.VISIBLE);
+
+            // Draw search area on the map
+            searchArea = createCircleForMap(selectedWayPoint.getLocation(), LocationService.DISTANCE_THRESHOLD);
+            mapView.getOverlays().add(searchArea);
+            mapView.invalidate();
         }
     }
 
@@ -190,6 +220,18 @@ public class MapFragment extends Fragment {
         if(line != null){
             mapView.getOverlays().remove(line);
             line = null;
+            mapView.invalidate();
+        }
+    }
+
+    /**
+     * Removes the drawn search area on the map if it exists
+     */
+    private void removeSearchAreaFromMap() {
+        if(searchArea != null){
+            mapView.getOverlays().remove(searchArea);
+            searchArea = null;
+            mapView.invalidate();
         }
     }
 
@@ -246,21 +288,37 @@ public class MapFragment extends Fragment {
     }
 
     /**
+     * Creates and a circle for map view
+     * @param point center point of circle
+     * @param radius radius of circle
+     * @return polygon as a circle
+     */
+    private Polygon createCircleForMap(GeoPoint point, double radius){
+        List<GeoPoint> circlePoints = Polygon.pointsAsCircle(point, radius);
+        Polygon circle = new Polygon(mapView);
+        circle.setPoints(circlePoints);
+        circle.getFillPaint().setColor(Color.BLUE);
+        circle.getFillPaint().setAlpha(100);
+        circle.setTitle("Search Area");
+        return circle;
+    }
+
+    /**
      * Check result of the guess
      * Complete the game or show a toast for feedback
      */
     private void checkGuess() {
         if(completionPoint != null) {
-            if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD) {
+            if (LocationService.checkIfInBounds(myLocation, completionPoint, 1)) {
                 Log.d(LOGTAG, "Completed \nReceived collectable: " + ServerManager.INSTANCE.getCachePointCollectable((CachePoint) selectedWayPoint).getName());
                 // TODO add to inventory
                 // TODO show completion screen
                 stopRoute();
-            } else if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD * 2) {
+            } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 2)) {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
-            } else if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD * 3){
+            } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 3)) {
                 Toast.makeText(getContext(), getString(R.string.warm), Toast.LENGTH_SHORT).show();
-            } else if (myLocation.distanceToAsDouble(completionPoint) <= COMPLETION_THRESHOLD * 5){
+            } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 5)) {
                 Toast.makeText(getContext(), getString(R.string.cold), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), getString(R.string.freezing), Toast.LENGTH_SHORT).show();
