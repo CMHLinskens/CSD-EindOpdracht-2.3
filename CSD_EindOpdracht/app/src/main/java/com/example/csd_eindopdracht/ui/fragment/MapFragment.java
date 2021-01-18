@@ -89,18 +89,22 @@ public class MapFragment extends Fragment {
         mapView.setDestroyMode(false);
         mapView.setMultiTouchControls(true);
         mapView.setBuiltInZoomControls(false);
+        mapView.setMaxZoomLevel(21.0);
+        mapView.setMinZoomLevel(5.0);
         mapController = mapView.getController();
-        mapController.setCenter(new GeoPoint(51.5988037, 4.77801));
         mapController.setZoom(16.5);
+
 
         myLocationMarker = new Marker(mapView);
         myLocationMarker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_location, null));
-        if(myLocation.getLongitude() == 0 && Data.INSTANCE.getLastKnownLocation().getLongitude() != 0){
-            myLocation.setLongitude(Data.INSTANCE.getLastKnownLocation().getLongitude());
-            myLocation.setLatitude(Data.INSTANCE.getLastKnownLocation().getLatitude());
+        if(myLocation.getLongitude() == 0 && myLocation.getLatitude() == 0){
+            Location lastKnownLocation = LocationService.getLastKnownLocation();
+            myLocation.setLongitude(lastKnownLocation.getLongitude());
+            myLocation.setLatitude(lastKnownLocation.getLatitude());
         }
         myLocationMarker.setPosition(myLocation);
         mapView.getOverlays().add(myLocationMarker);
+        mapController.setCenter(myLocation);
 
         ImageButton myLocationButton = view.findViewById(R.id.btn_map_mylocation);
         myLocationButton.setOnClickListener(view1 -> {
@@ -177,7 +181,6 @@ public class MapFragment extends Fragment {
     public void onLocationEvent(Location location){
         myLocation.setLatitude(location.getLatitude());
         myLocation.setLongitude(location.getLongitude());
-        Data.INSTANCE.setLastKnownLocation(myLocation);
 
         // If we have a route but we have not reached it yet, update the route
         if(selectedWayPoint != null && completionPoint == null){

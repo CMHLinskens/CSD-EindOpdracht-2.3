@@ -44,12 +44,10 @@ public enum Data {
     private List<WayPoint> wayPoints = new ArrayList<>();
     private List<Collectable> inventory = new ArrayList<>();
     private DataApiManager dataApiManager;
-    private GeoPoint lastKnownLocation = new GeoPoint(0,0);
 
     public Factory getFactory() { return this.factory; }
     public List<WayPoint> getWayPoints() { return this.wayPoints; }
     public List<Collectable> getInventory() { return this.inventory; }
-    public GeoPoint getLastKnownLocation() { return this.lastKnownLocation; }
 
     /**
      * Method called on start up of app.
@@ -157,15 +155,6 @@ public enum Data {
             return null;
         }
         return jsonString;
-    }
-
-    /**
-     * Updates the last known location of the user
-     * @param newLocation last known position
-     */
-    public void setLastKnownLocation(GeoPoint newLocation){
-        lastKnownLocation.setLongitude(newLocation.getLongitude());
-        lastKnownLocation.setLatitude(newLocation.getLatitude());
     }
 
     /**

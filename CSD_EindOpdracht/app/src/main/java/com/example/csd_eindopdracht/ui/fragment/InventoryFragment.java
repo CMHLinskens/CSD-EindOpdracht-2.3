@@ -104,8 +104,6 @@ public class InventoryFragment extends Fragment {
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
         else
             timerTextView.setText("READY"); // TODO: use string resources
-
-
     }
 
     private void initializeSpinButton(View view) {

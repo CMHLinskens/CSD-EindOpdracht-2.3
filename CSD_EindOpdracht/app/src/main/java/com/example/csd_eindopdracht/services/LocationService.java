@@ -1,9 +1,12 @@
 package com.example.csd_eindopdracht.services;
 
+import android.Manifest;
+import android.app.Application;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.example.csd_eindopdracht.R;
@@ -26,19 +30,18 @@ import org.osmdroid.util.GeoPoint;
 public class LocationService extends Service {
     private static final String LOGTAG = LocationService.class.getName();
 
-    private LocationManager locationManager = null;
+    private static LocationManager locationManager = null;
     private static final int LOCATION_INTERVAL = 2500;
     private static final float LOCATION_DISTANCE = 10f;
     LocationListener locationListener = null;
     public static final double DISTANCE_THRESHOLD = 40;
     private static final double COMPLETION_THRESHOLD = 5;
 
-
     public static class WayPointReachedEvent {
         WayPoint wayPoint;
         GeoPoint completionPoint;
 
-        WayPointReachedEvent(WayPoint wayPoint, GeoPoint completionPoint){
+        WayPointReachedEvent(WayPoint wayPoint, GeoPoint completionPoint) {
             this.wayPoint = wayPoint;
             this.completionPoint = completionPoint;
         }
@@ -46,6 +49,7 @@ public class LocationService extends Service {
         public WayPoint getWayPoint() {
             return wayPoint;
         }
+
         public GeoPoint getCompletionPoint() {
             return completionPoint;
         }
@@ -54,9 +58,9 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            for(WayPoint wp : Data.INSTANCE.getWayPoints()){
+            for (WayPoint wp : Data.INSTANCE.getWayPoints()) {
                 double distance = wp.getLocation().distanceToAsDouble(new GeoPoint(location.getLatitude(), location.getLongitude()));
-                if(distance <= DISTANCE_THRESHOLD) {
+                if (distance <= DISTANCE_THRESHOLD) {
                     EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
                 }
             }
@@ -100,9 +104,20 @@ public class LocationService extends Service {
      * @param point2 second point
      * @return result as boolean
      */
-    public static boolean checkIfInBounds(GeoPoint point1, GeoPoint point2, int modifier){
+    public static boolean checkIfInBounds(GeoPoint point1, GeoPoint point2, int modifier) {
         return point1.distanceToAsDouble(point2) <= (COMPLETION_THRESHOLD * modifier);
     }
+
+    public static Location getLastKnownLocation() {
+        Location lastKnownLocation = new Location("");
+        try{
+            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        } catch(SecurityException e){
+            Log.e(LOGTAG, "ERROR: in getLastKnownLocation in LocationService.java " + e.getMessage());
+        }
+        return lastKnownLocation;
+    }
+
 
     @Nullable
     @Override
