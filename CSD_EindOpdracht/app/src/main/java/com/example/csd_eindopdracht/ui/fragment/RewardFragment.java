@@ -77,6 +77,7 @@ public class RewardFragment extends Fragment {
                 if (chooseCardPopUp.getCollectable() != null) {
                     yourCollectable = chooseCardPopUp.getCollectable();
                     updateYourCollectable(view);
+                    acceptButton.setEnabled(true);
                 }
             });
             chooseCardPopUp.show();
@@ -85,6 +86,7 @@ public class RewardFragment extends Fragment {
 
     private void initializeAcceptButton(View view) {
         acceptButton = view.findViewById(R.id.btn_reward_accept);
+        acceptButton.setEnabled(false);
         acceptButton.setOnClickListener(v -> {
             // TODO: add alert pop-up: are you sure you accept this trade?
             Data.INSTANCE.removeFromInventory(yourCollectable);
