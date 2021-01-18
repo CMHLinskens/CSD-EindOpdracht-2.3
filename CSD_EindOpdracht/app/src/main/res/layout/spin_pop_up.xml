@@ -22,7 +22,7 @@
         android:id="@+id/image_spin_wheel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/placeholder_wheel"
+        android:src="@drawable/spinning_wheel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
