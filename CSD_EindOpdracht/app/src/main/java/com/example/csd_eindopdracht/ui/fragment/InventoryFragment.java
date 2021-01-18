@@ -62,6 +62,9 @@ public class InventoryFragment extends Fragment {
         inventory = (ArrayList<Collectable>) Data.INSTANCE.getInventory();
 
         collectableAdapter = new CollectableAdapter(inventory);
+        collectableAdapter.setOnItemClickListener(position -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createCardDetailFragment(Data.INSTANCE.getInventory().get(position))).addToBackStack(null).commit();
+        });
         collectableRecyclerView.setLayoutManager(layoutManager);
         collectableRecyclerView.setAdapter(collectableAdapter);
 

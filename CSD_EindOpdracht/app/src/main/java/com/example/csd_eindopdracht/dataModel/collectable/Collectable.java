@@ -5,13 +5,15 @@ public abstract class Collectable {
     String imgLink;
     int level;
     String id;
+    String description;
 
 
-    public Collectable(String name, String imgLink, int level, String id) {
+    public Collectable(String name, String imgLink, int level, String id, String description) {
         this.name = name;
         this.imgLink = imgLink;
         this.level = level;
         this.id = id;
+        this.description = description;
     }
 
     public String getName() {
@@ -44,5 +46,13 @@ public abstract class Collectable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
