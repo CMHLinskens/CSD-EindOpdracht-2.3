@@ -14,8 +14,8 @@ import org.osmdroid.util.GeoPoint;
 public class YugiohFactory extends Factory{
 
     @Override
-    public Collectable createCollectable(String name, String imgLink, int level, String id) {
-        return new YugiohCollectable(name,  imgLink, level, id);
+    public Collectable createCollectable(String name, String imgLink, int level, String id, String description) {
+        return new YugiohCollectable(name,  imgLink, level, id, description);
     }
 
     @Override
@@ -24,7 +24,8 @@ public class YugiohFactory extends Factory{
             return new YugiohCollectable(jsonObject.getString("name"),
                     jsonObject.getJSONArray("card_images").getJSONObject(0).getString("image_url"),
                     jsonObject.getInt("level"),
-                    String.valueOf(jsonObject.getInt("id")));
+                    String.valueOf(jsonObject.getInt("id")),
+                    jsonObject.getString("desc"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
