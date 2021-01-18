@@ -74,9 +74,10 @@ public class RewardFragment extends Fragment {
         ChooseCardPopUp chooseCardPopUp = new ChooseCardPopUp(getContext(), yourCollectable);
         chooseCardButton.setOnClickListener(v -> {
             chooseCardPopUp.setOnDismissListener(dialog -> {
-                if (chooseCardPopUp.getCollectable() != null)
+                if (chooseCardPopUp.getCollectable() != null) {
                     yourCollectable = chooseCardPopUp.getCollectable();
                     updateYourCollectable(view);
+                }
             });
             chooseCardPopUp.show();
         });
