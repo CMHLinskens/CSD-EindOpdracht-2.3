@@ -103,6 +103,7 @@ public class MapFragment extends Fragment {
             myLocation.setLatitude(lastKnownLocation.getLatitude());
         }
         myLocationMarker.setPosition(myLocation);
+        myLocationMarker.setInfoWindow(null);
         mapView.getOverlays().add(myLocationMarker);
         mapController.setCenter(myLocation);
 
@@ -139,6 +140,7 @@ public class MapFragment extends Fragment {
             Drawable drawable = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_waypoint)));
             drawable.setTint(Color.BLACK);
             marker.setIcon(drawable);
+            marker.setInfoWindow(null);
             marker.setOnMarkerClickListener((marker1, mapView) -> {
                 Log.d(LOGTAG, "Clicked on way point: " + wp.getName());
                 if(selectedWayPoint == null)
@@ -318,7 +320,7 @@ public class MapFragment extends Fragment {
         line.getOutlinePaint().setColor(Color.GRAY);
         line.setPoints(geoPoints);
         line.setGeodesic(true);
-        line.setInfoWindow(new BasicInfoWindow(R.layout.bonuspack_bubble, mapView));
+        line.setInfoWindow(null);
         return line;
     }
 
@@ -335,6 +337,7 @@ public class MapFragment extends Fragment {
         circle.getFillPaint().setColor(Color.BLUE);
         circle.getFillPaint().setAlpha(100);
         circle.setTitle("Search Area");
+        circle.setInfoWindow(null);
         return circle;
     }
 
