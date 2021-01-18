@@ -7,6 +7,7 @@ import android.view.Window;
 
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
+import com.example.csd_eindopdracht.services.LocationService;
 import com.example.csd_eindopdracht.services.dataApiManager.DataApiManager;
 import com.example.csd_eindopdracht.services.dataApiManager.YugiohDataAPIManager;
 import com.example.csd_eindopdracht.util.Factory;
@@ -44,10 +45,13 @@ public enum Data {
     private List<WayPoint> wayPoints = new ArrayList<>();
     private List<Collectable> inventory = new ArrayList<>();
     private DataApiManager dataApiManager;
+    private LocationService.WayPointReachedEvent savedWayPointEvent = null;
 
     public Factory getFactory() { return this.factory; }
     public List<WayPoint> getWayPoints() { return this.wayPoints; }
     public List<Collectable> getInventory() { return this.inventory; }
+    public LocationService.WayPointReachedEvent getSavedWayPointEvent() { return this.savedWayPointEvent; }
+    public void setSavedWayPointEvent(LocationService.WayPointReachedEvent wayPointEvent) { this.savedWayPointEvent = wayPointEvent; }
 
     /**
      * Method called on start up of app.

@@ -8,5 +8,10 @@
 		"name": "Kloosterkazerne",
 		"longitude": 51.587722,
 		"latitude": 4.781028
+	},
+	{
+		"name": "Epic",
+		"longitude": 51.5988,
+		"latitude": 4.7779
 	}
 ]

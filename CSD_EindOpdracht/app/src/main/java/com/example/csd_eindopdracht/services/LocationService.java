@@ -58,11 +58,9 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         @Override
         public void onLocationChanged(@NonNull Location location) {
-            for (WayPoint wp : Data.INSTANCE.getWayPoints()) {
-                double distance = wp.getLocation().distanceToAsDouble(new GeoPoint(location.getLatitude(), location.getLongitude()));
-                if (distance <= DISTANCE_THRESHOLD) {
-                    EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
-                }
+            WayPoint wp = getWayPointInBounds(location);
+            if(wp != null) {
+                EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
             }
             EventBus.getDefault().post(location);
         }
@@ -83,7 +81,12 @@ public class LocationService extends Service {
         }
     }
 
-    private GeoPoint getRandomCompletionPoint(GeoPoint location) {
+    /**
+     * Calculates a random point within a radius of 40 meters of location
+     * @param location center point of circle
+     * @return GeoPoint with random point coordinates
+     */
+    private static GeoPoint getRandomCompletionPoint(GeoPoint location) {
         // TODO calculate a random point within a radius of 40 meters of location
         return location;
     }
@@ -108,16 +111,36 @@ public class LocationService extends Service {
         return point1.distanceToAsDouble(point2) <= (COMPLETION_THRESHOLD * modifier);
     }
 
+    /**
+     * Uses LocationManager to retrieve the last known location of the user
+     * @return last location info
+     */
     public static Location getLastKnownLocation() {
-        Location lastKnownLocation = new Location("");
         try{
-            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//            WayPoint wp = getWayPointInBounds(location);
+//            if(wp != null)
+//                EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
+            return location;
         } catch(SecurityException e){
             Log.e(LOGTAG, "ERROR: in getLastKnownLocation in LocationService.java " + e.getMessage());
         }
-        return lastKnownLocation;
+        return null;
     }
 
+    /**
+     * Check if location in standing inside any of the way points
+     * @param location user location
+     * @return WayPoint that user is standing in, if no way point found return null
+     */
+    private static WayPoint getWayPointInBounds(Location location){
+        for (WayPoint wp : Data.INSTANCE.getWayPoints()) {
+            if (checkIfInBounds(wp.getLocation(), new GeoPoint(location.getLatitude(), location.getLongitude()))) {
+                return wp;
+            }
+        }
+        return null;
+    }
 
     @Nullable
     @Override
