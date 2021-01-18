@@ -127,7 +127,7 @@ public class InventoryFragment extends Fragment {
             isReadyToSpin = false;
             spinButton.setEnabled(false);
             Log.d(LOGTAG, "Level " + randomLevel);
-            new SpinPopUp(getActivity(), 3000, 360 + randomLevel * 30).show();
+            new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
             });
     }
 
