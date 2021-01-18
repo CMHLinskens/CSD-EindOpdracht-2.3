@@ -10,7 +10,7 @@
         android:id="@+id/text_spin_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Spin"
+        android:text="@string/spin"
         android:fontFamily="@font/yugioh_font"
         android:textAlignment="center"
         android:textSize="50sp"
@@ -19,16 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/image_spin_wheel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/spinning_wheel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_spin_title" />
-
-    <ImageView
+        android:id="@+id/image_spin_pointer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/placeholder_pointer"
@@ -37,5 +28,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_spin_title"
         app:layout_constraintVertical_bias="0.75"/>
+
+    <ImageView
+        android:id="@+id/image_spin_wheel"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/spinning_wheel"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_spin_pointer" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
