@@ -16,13 +16,14 @@
         android:theme="@style/Theme.CSD_EindOpdracht">
 
         <service android:name=".services.LocationService" android:stopWithTask="true"/>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>
