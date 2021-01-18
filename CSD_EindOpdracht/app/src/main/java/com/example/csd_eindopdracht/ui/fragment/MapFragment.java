@@ -192,8 +192,8 @@ public class MapFragment extends Fragment {
         if(selectedWayPoint != null && completionPoint == null){
             getRouteToPoint(selectedWayPoint.getLocation());
         // If we have a route and we have reached it, check if we are still in bounds
-        } else if(selectedWayPoint != null){
-            if(!LocationService.checkIfInBounds(myLocation, selectedWayPoint.getLocation())) {
+        } else if(completionPoint != null){
+            if(!LocationService.checkIfInBounds(myLocation, Data.INSTANCE.getSavedWayPointEvent().getWayPoint().getLocation())) {
                 outOfBounds();
             }
         }
@@ -211,7 +211,8 @@ public class MapFragment extends Fragment {
         completionPoint = null;
         guessButton.setVisibility(View.GONE);
         new AlertPopUp(getActivity(),getString(R.string.out_of_bounds_title), getString(R.string.out_of_bounds_message)).show();
-        getRouteToPoint(selectedWayPoint.getLocation());
+        if(selectedWayPoint != null)
+            getRouteToPoint(selectedWayPoint.getLocation());
         removeSearchAreaFromMap();
     }
 
