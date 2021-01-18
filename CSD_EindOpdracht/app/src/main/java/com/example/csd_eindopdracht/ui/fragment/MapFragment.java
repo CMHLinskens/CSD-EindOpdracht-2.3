@@ -115,13 +115,17 @@ public class MapFragment extends Fragment {
 
         button = view.findViewById(R.id.btn_map_inventory);
         button.setOnClickListener(v -> {
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new InventoryFragment()).addToBackStack(null).commit(); // TODO: use factory
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createInventoryFragment()).addToBackStack(null).commit();
         });
         
         guessButton = view.findViewById(R.id.btn_map_guess);
         guessButton.setOnClickListener(view1 -> checkGuess());
 
         drawWayPoints();
+
+        if(Data.INSTANCE.getSavedWayPointEvent() != null){
+            goToSearchState(Data.INSTANCE.getSavedWayPointEvent());
+        }
         return view;
     }
 
@@ -155,7 +159,6 @@ public class MapFragment extends Fragment {
      * @param wayPoint selected way point
      */
     private void startRoute(WayPoint wayPoint) {
-        // TODO make check to see if we are already standing on the selected way point
         selectedWayPoint = wayPoint;
         getRouteToPoint(wayPoint.getLocation());
     }
@@ -165,8 +168,9 @@ public class MapFragment extends Fragment {
      */
     private void stopRoute(){
         removeLineFromMap();
-        removeSearchAreaFromMap();
+//        removeSearchAreaFromMap();
         if(completionPoint != null) {
+            Data.INSTANCE.setSavedWayPointEvent(null);
             completionPoint = null;
             guessButton.setVisibility(View.GONE);
         }
@@ -201,6 +205,7 @@ public class MapFragment extends Fragment {
      * Reset the completion point and let the user know he/she has walked out of the zone
      */
     private void outOfBounds() {
+        Data.INSTANCE.setSavedWayPointEvent(null);
         completionPoint = null;
         guessButton.setVisibility(View.GONE);
         new AlertPopUp(getActivity(),getString(R.string.out_of_bounds_title), getString(R.string.out_of_bounds_message)).show();
@@ -214,23 +219,33 @@ public class MapFragment extends Fragment {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWayPointReachedEvent(LocationService.WayPointReachedEvent event) {
-        if(selectedWayPoint == null || completionPoint != null) { return; }
-        if(event.getWayPoint().getName().equals(selectedWayPoint.getName())) {
+        if(completionPoint != null) { return; }
+//        if(event.getWayPoint().getName().equals(selectedWayPoint.getName())) {
             removeLineFromMap();
             Log.d(LOGTAG, "Reached way point");
-            completionPoint = event.getCompletionPoint();
-
-            // Make guess button appear on screen
-            guessButton.setVisibility(View.VISIBLE);
+            Data.INSTANCE.setSavedWayPointEvent(event);
 
             // Show pop up with explanation
             new AlertPopUp(getActivity(),getString(R.string.reached_popup_title), getString(R.string.reached_popup_message)).show();
 
-            // Draw search area on the map
-            searchArea = createCircleForMap(selectedWayPoint.getLocation(), LocationService.DISTANCE_THRESHOLD);
-            mapView.getOverlays().add(searchArea);
-            mapView.invalidate();
-        }
+            goToSearchState(event);
+//        }
+    }
+
+    /**
+     * Puts the map view in search mode
+     * @param event way point event with relevant data
+     */
+    private void goToSearchState(LocationService.WayPointReachedEvent event) {
+        this.completionPoint = event.getCompletionPoint();
+
+        // Make guess button appear on screen
+        guessButton.setVisibility(View.VISIBLE);
+
+        // Draw search area on the map
+        searchArea = createCircleForMap(event.getWayPoint().getLocation(), LocationService.DISTANCE_THRESHOLD);
+        mapView.getOverlays().add(searchArea);
+        mapView.invalidate();
     }
 
     /**
