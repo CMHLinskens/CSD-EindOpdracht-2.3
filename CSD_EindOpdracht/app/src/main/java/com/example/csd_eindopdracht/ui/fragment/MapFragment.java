@@ -95,8 +95,9 @@ public class MapFragment extends Fragment {
 
         myLocationMarker = new Marker(mapView);
         myLocationMarker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_location, null));
-        if(myLocation == null){
-
+        if(myLocation.getLongitude() == 0 && Data.INSTANCE.getLastKnownLocation().getLongitude() != 0){
+            myLocation.setLongitude(Data.INSTANCE.getLastKnownLocation().getLongitude());
+            myLocation.setLatitude(Data.INSTANCE.getLastKnownLocation().getLatitude());
         }
         myLocationMarker.setPosition(myLocation);
         mapView.getOverlays().add(myLocationMarker);
@@ -176,6 +177,7 @@ public class MapFragment extends Fragment {
     public void onLocationEvent(Location location){
         myLocation.setLatitude(location.getLatitude());
         myLocation.setLongitude(location.getLongitude());
+        Data.INSTANCE.setLastKnownLocation(myLocation);
 
         // If we have a route but we have not reached it yet, update the route
         if(selectedWayPoint != null && completionPoint == null){
