@@ -22,5 +22,6 @@
     <string name="choose_your_card">Choose your card</string>
     <string name="rarity_bonus">\"Rarity Bonus: \"</string>
     <string name="points">Points</string>
+    <string name="spin">Spin</string>
 
 </resources>
