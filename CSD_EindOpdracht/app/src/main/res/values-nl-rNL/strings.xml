@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hot">Heet</string>
+    <string name="cold">Koud</string>
+    <string name="warm">Warm</string>
+    <string name="freezing">Ijskoud</string>
+    <string name="reached_popup_title">Way Point Bereikt</string>
+    <string name="reached_popup_message">Er is een knop rechts onder op het scherm verschenen. Gebruik deze knop om de juiste locatie van de cache de gokken.</string>
+    <string name="out_of_bounds_title">Uit het gebied</string>
+    <string name="out_of_bounds_message">U bent uit het gebied gelopen. Keer alstublieft terug naar het punt.</string>
+    <string name="title_inventory">Inventaris</string>
+    <string name="button_daily_spin">Dagelijkse draai</string>
+    <string name="congratulations">Gefeliciteerd!</string>
+    <string name="cache_reached">U bent gearriveerd op een cache punt!</string>
+    <string name="your_card">Uw kaart</string>
+    <string name="cached_card">Gevonden kaart</string>
+    <string name="pick_a_card">Kies een kaart</string>
+    <string name="rarity_bonus_100_points">Zeldzaamheid bonus: 0 punten</string>
+    <string name="accept">Accepteren</string>
+    <string name="refuse">Afwijzen</string>
+    <string name="choose_your_card">Kies uw kaart</string>
+    <string name="rarity_bonus">"Zeldzaamheid bonus: "</string>
+    <string name="points">Punten</string>
+    <string name="spin">Draai</string>
+    <string name="button_normal_spin">Draai voor 1000</string>
+    <string name="spin_wait_text">"VOLGENDE GRATIS DRAAI: "</string>
+    <string name="spin_ready_text">KLAAR</string>
+</resources>

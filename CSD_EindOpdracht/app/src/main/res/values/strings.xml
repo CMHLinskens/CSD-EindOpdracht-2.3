@@ -1,22 +1,22 @@
 <resources>
-    <string name="app_name">CSD_EindOpdracht</string>
+    <string name="app_name" translatable="false">Yugioh Cacher</string>
     <string name="warm">Warm</string>
     <string name="cold">Cold</string>
     <string name="hot">Hot</string>
     <string name="freezing">Freezing</string>
-    <string name="confirm">OK</string>
+    <string name="confirm" translatable="false">OK</string>
     <string name="reached_popup_title">Reached Way Point</string>
     <string name="reached_popup_message">A button appeared in the bottom left corner. Use this to guess the location of the cache by standing on the right point within the circle.</string>
     <string name="out_of_bounds_title">Out Of Bounds</string>
-    <string name="out_of_bounds_message">You have walked out of bounds. Please return to the way point</string>
+    <string name="out_of_bounds_message">You have walked out of bounds. Please return to the way point.</string>
     <string name="title_inventory">Inventory</string>
     <string name="button_daily_spin">Daily spin</string>
     <string name="congratulations">Congratulations!</string>
-    <string name="cache_reached">You have reached the cache point!</string>
+    <string name="cache_reached">You have reached a cache point!</string>
     <string name="your_card">Your card</string>
     <string name="cached_card">Cached card</string>
     <string name="pick_a_card">Pick a card</string>
-    <string name="rarity_bonus_100_points">Rarity bonus: 100 points</string>
+    <string name="rarity_bonus_100_points">Rarity bonus: 0 points</string>
     <string name="accept">Accept</string>
     <string name="refuse">Refuse</string>
     <string name="choose_your_card">Choose your card</string>
