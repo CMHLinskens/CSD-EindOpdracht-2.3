@@ -66,7 +66,7 @@ public enum Data {
         dataApiManager = new YugiohDataAPIManager(factory);
 
         // Uncomment to reset all saved data.
-//        editor.clear().apply();
+        editor.clear().apply();
 
         try {
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
@@ -80,6 +80,11 @@ public enum Data {
 
         // Get all collected collectables
         retrieveInventory();
+
+        // If it is the first time the user uses this app fill the inventory with 5 random cards
+        if(inventory.size() == 0)
+            for(int i = 1; i < 6; i++)
+                getRandomCardWithLevel(i, this::addToInventory);
     }
 
     /**
@@ -210,6 +215,12 @@ public enum Data {
         });
     }
 
+    /**
+     * Sends a API call to get all the cards with the given level
+     * When it received all cards, it randomly picks one and notifies the listener with the new card
+     * @param level level of the card to get
+     * @param listener listener to notify when its done
+     */
     public void getRandomCardWithLevel(int level, RandomCardListener listener){
         dataApiManager.getCardsWithLevel(level, new Callback() {
             @Override

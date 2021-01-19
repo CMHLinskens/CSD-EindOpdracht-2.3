@@ -1,5 +1,7 @@
 package com.example.csd_eindopdracht.util;
 
+import android.util.Log;
+
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.collectable.YugiohCollectable;
 import com.example.csd_eindopdracht.dataModel.wayPoint.CachePoint;
@@ -12,6 +14,7 @@ import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
 public class YugiohFactory extends Factory{
+    private static final String LOGTAG = YugiohFactory.class.getName();
 
     @Override
     public Collectable createCollectable(String name, String imgLink, int level, String id, String description) {
@@ -27,7 +30,7 @@ public class YugiohFactory extends Factory{
                     String.valueOf(jsonObject.getInt("id")),
                     jsonObject.getString("desc"));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOGTAG, "Error: " + e.getMessage());
         }
         return null;
     }
