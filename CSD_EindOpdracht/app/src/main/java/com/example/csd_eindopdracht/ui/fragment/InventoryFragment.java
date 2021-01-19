@@ -20,18 +20,12 @@ import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.ui.CollectableAdapter;
-import com.example.csd_eindopdracht.ui.popup.AlertPopUp;
 import com.example.csd_eindopdracht.ui.popup.SpinPopUp;
-import com.example.csd_eindopdracht.util.RandomCardListener;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.PeriodFormat;
 import org.joda.time.format.PeriodFormatterBuilder;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
@@ -47,7 +41,7 @@ public class InventoryFragment extends Fragment {
     private DateTime lastSpinDateTime;
     private DateTime currentDateTime;
     private Period period;
-    private boolean isReadyToSpin;
+    private boolean isReadyToDailySpin;
     private TimerTask timerTask;
     private Timer timer;
 
@@ -75,9 +69,9 @@ public class InventoryFragment extends Fragment {
         if (lastSpinDateTime != null) {
             period = new Period(lastSpinDateTime, currentDateTime);
             // Check if 20 hours have passed
-            isReadyToSpin = getTotalHours(period) > 20;
+            isReadyToDailySpin = getTotalHours(period) > 20;
         } else {
-            isReadyToSpin = true;
+            isReadyToDailySpin = true;
         }
 
         initializeSpinButton(view);
@@ -98,40 +92,58 @@ public class InventoryFragment extends Fragment {
                 Period nextTimePeriod = new Period(lastSpinDateTime.plusHours(20).minusHours(getTotalHours(period)), DateTime.now());
                 String formattedTime = new PeriodFormatterBuilder().minimumPrintedDigits(2).printZeroAlways().appendHours().appendSeparator(":").appendMinutes().appendSeparator(":").appendSeconds().toFormatter().print(nextTimePeriod);
                 String nextSpinTime = formattedTime.replaceAll("-", "");
-                new Handler(Looper.getMainLooper()).post(() -> timerTextView.setText("NEXT SPIN: " + nextSpinTime)); // TODO: use string resources
+                new Handler(Looper.getMainLooper()).post(() -> timerTextView.setText(getString(R.string.spin_wait_text) + nextSpinTime));
             }
         };
         timer = new Timer();
 
-        if (!isReadyToSpin)
+        if (!isReadyToDailySpin)
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
         else
-            timerTextView.setText("READY"); // TODO: use string resources
+            timerTextView.setText(getString(R.string.spin_ready_text));
     }
 
     private void initializeSpinButton(View view) {
         Button spinButton = view.findViewById(R.id.btn_inventory_spin);
 
-
         // If 20 hours have passed since last spin, enable the button
-        spinButton.setEnabled(isReadyToSpin);
+        if(isReadyToDailySpin) {
+            spinButton.setEnabled(true);
+            spinButton.setText(getString(R.string.button_daily_spin));
 
-
-        spinButton.setOnClickListener(v -> {
-            int randomLevel = new Random().nextInt(12) + 1;
-            Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
-                Data.INSTANCE.addToInventory(newCollectable);
-                Looper.prepare();
-                new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
+            spinButton.setOnClickListener(v -> {
+                int randomLevel = new Random().nextInt(12) + 1;
+                Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
+                    Data.INSTANCE.addToInventory(newCollectable);
+                    Looper.prepare();
+                    new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
+                });
+                Data.INSTANCE.setLastSpinDate();
+                lastSpinDateTime = DateTime.now();
+                timer.scheduleAtFixedRate(timerTask, 0, 1000);
+                isReadyToDailySpin = false;
+                new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
+                initializeSpinButton(view);
             });
-            Data.INSTANCE.setLastSpinDate();
-            lastSpinDateTime = DateTime.now();
-            timer.scheduleAtFixedRate(timerTask, 0, 1000);
-            isReadyToSpin = false;
+        } else if (Data.INSTANCE.getPoints() >= 1000){
+            spinButton.setEnabled(true);
+            spinButton.setText(getString(R.string.button_normal_spin));
+
+            spinButton.setOnClickListener(v -> {
+                Data.INSTANCE.addOrSubtractPoints(-1000);
+                int randomLevel = new Random().nextInt(12) + 1;
+                Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
+                    Data.INSTANCE.addToInventory(newCollectable);
+                    Looper.prepare();
+                    new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
+                });
+                new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
+                initializeSpinButton(view);
+            });
+        } else {
             spinButton.setEnabled(false);
-            Log.d(LOGTAG, "Level " + randomLevel);
-            new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
-            });
+            spinButton.setText(getString(R.string.button_normal_spin));
+        }
     }
 
     private int getTotalHours(Period period){

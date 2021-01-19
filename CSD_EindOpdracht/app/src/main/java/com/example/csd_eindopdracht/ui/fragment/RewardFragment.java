@@ -60,7 +60,7 @@ public class RewardFragment extends Fragment {
         Picasso.get().load(yourCollectable.getImgLink()).placeholder(R.drawable.card_placeholder).into(cardImageView);
 
         rarityBonusTextView = view.findViewById(R.id.text_view_reward_rarity_bonus);
-        rarityBonusTextView.setText(getString(R.string.rarity_bonus) + 0 + " " + getString(R.string.points)); // TODO: decide rarity points
+        rarityBonusTextView.setText(getString(R.string.rarity_bonus) + yourCollectable.calculatePointValue() + " " + getString(R.string.points));
     }
 
     private void initializeButtons(View view) {
@@ -91,7 +91,7 @@ public class RewardFragment extends Fragment {
             // TODO: add alert pop-up: are you sure you accept this trade?
             Data.INSTANCE.removeFromInventory(yourCollectable);
             Data.INSTANCE.addToInventory(cachedCollectable);
-            // TODO: add rarity bonus
+            Data.INSTANCE.addOrSubtractPoints(yourCollectable.calculatePointValue());
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).commit();
         });
     }
