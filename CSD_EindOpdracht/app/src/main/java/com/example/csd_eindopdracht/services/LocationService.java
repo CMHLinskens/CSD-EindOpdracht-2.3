@@ -58,11 +58,11 @@ public class LocationService extends Service {
     private class LocationListener implements android.location.LocationListener {
         @Override
         public void onLocationChanged(@NonNull Location location) {
+            EventBus.getDefault().post(location);
             WayPoint wp = getWayPointInBounds(location);
             if(wp != null) {
                 EventBus.getDefault().post(new WayPointReachedEvent(wp, getRandomCompletionPoint(wp.getLocation())));
             }
-            EventBus.getDefault().post(location);
         }
 
         @Override

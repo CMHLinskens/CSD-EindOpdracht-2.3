@@ -94,7 +94,7 @@ public class MapFragment extends Fragment {
         mapView.setMaxZoomLevel(21.0);
         mapView.setMinZoomLevel(5.0);
         mapController = mapView.getController();
-        mapController.setZoom(16.5);
+        mapController.setZoom(19.0);
 
 
         myLocationMarker = new Marker(mapView);
@@ -112,7 +112,7 @@ public class MapFragment extends Fragment {
         ImageButton myLocationButton = view.findViewById(R.id.btn_map_mylocation);
         myLocationButton.setOnClickListener(view1 -> {
             mapController.setCenter(myLocation);
-            mapController.setZoom(16.5);
+            mapController.setZoom(19.0);
             mapView.invalidate();
         });
 
@@ -212,13 +212,15 @@ public class MapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
+        if(EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
     /**
