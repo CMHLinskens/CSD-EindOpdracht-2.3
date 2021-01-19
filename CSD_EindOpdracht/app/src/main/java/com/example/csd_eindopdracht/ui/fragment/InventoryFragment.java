@@ -124,7 +124,7 @@ public class InventoryFragment extends Fragment {
                 lastSpinDateTime = DateTime.now();
                 timer.scheduleAtFixedRate(timerTask, 0, 1000);
                 isReadyToDailySpin = false;
-                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -720 + randomLevel * 30);
+                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -360 - randomLevel * 30);
                 spinPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 spinPopUp.show();
                 initializeSpinButton(view);
@@ -141,7 +141,7 @@ public class InventoryFragment extends Fragment {
                     Looper.prepare();
                     new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
                 });
-                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -720 + randomLevel * 30);
+                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -360 - randomLevel * 30);
                 spinPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 spinPopUp.show();
                 initializeSpinButton(view);

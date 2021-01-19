@@ -65,7 +65,7 @@ import okhttp3.Response;
 
 public class MapFragment extends Fragment {
     private static final String LOGTAG = MapFragment.class.getName();
-    private Button button;
+    private ImageButton button;
     private MapView mapView = null;
     private IMapController mapController = null;
     private final GeoPoint myLocation = new GeoPoint(0,0);
