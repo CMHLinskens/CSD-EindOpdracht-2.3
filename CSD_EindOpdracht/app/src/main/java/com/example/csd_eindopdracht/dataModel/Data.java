@@ -93,8 +93,6 @@ public enum Data {
     public void addOrSubtractPoints(int points){
         this.points += points;
         editor.putInt("points", this.points).apply();
-        Log.d(LOGTAG, "Points: " + this.points);
-
     }
 
     /**

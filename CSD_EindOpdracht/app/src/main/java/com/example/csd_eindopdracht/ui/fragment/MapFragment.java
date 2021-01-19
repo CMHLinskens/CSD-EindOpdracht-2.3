@@ -1,5 +1,7 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -81,8 +83,8 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         // Subscribe to EventBus
-        if(!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
+//        if(!EventBus.getDefault().isRegistered(this))
+//            EventBus.getDefault().register(this);
 
         mapView = view.findViewById(R.id.osm_map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -171,13 +173,17 @@ public class MapFragment extends Fragment {
     private void stopRoute(){
         removeLineFromMap();
 //        removeSearchAreaFromMap();
+        selectedWayPoint = null;
+    }
+
+    private void removeCompletionPoint(){
         if(completionPoint != null) {
             Data.INSTANCE.setSavedWayPointEvent(null);
             completionPoint = null;
             guessButton.setVisibility(View.GONE);
         }
-        selectedWayPoint = null;
     }
+
 
     /**
      * Method triggered by EventBus when new location is received
@@ -193,14 +199,26 @@ public class MapFragment extends Fragment {
             getRouteToPoint(selectedWayPoint.getLocation());
         // If we have a route and we have reached it, check if we are still in bounds
         } else if(completionPoint != null){
-            if(!LocationService.checkIfInBounds(myLocation, Data.INSTANCE.getSavedWayPointEvent().getWayPoint().getLocation())) {
-                outOfBounds();
-            }
+            if(Data.INSTANCE.getSavedWayPointEvent() != null)
+                if(!LocationService.checkIfInBounds(myLocation, Data.INSTANCE.getSavedWayPointEvent().getWayPoint().getLocation()))
+                    outOfBounds();
         }
 
         // Update my location marker
         myLocationMarker.setPosition(myLocation);
         mapView.invalidate();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -210,7 +228,8 @@ public class MapFragment extends Fragment {
         Data.INSTANCE.setSavedWayPointEvent(null);
         completionPoint = null;
         guessButton.setVisibility(View.GONE);
-        new AlertPopUp(getActivity(),getString(R.string.out_of_bounds_title), getString(R.string.out_of_bounds_message)).show();
+        if(getActivity() != null)
+            new AlertPopUp(getActivity(),getString(R.string.out_of_bounds_title), getString(R.string.out_of_bounds_message)).show();
         if(selectedWayPoint != null)
             getRouteToPoint(selectedWayPoint.getLocation());
         removeSearchAreaFromMap();
@@ -223,16 +242,15 @@ public class MapFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onWayPointReachedEvent(LocationService.WayPointReachedEvent event) {
         if(completionPoint != null) { return; }
-//        if(event.getWayPoint().getName().equals(selectedWayPoint.getName())) {
-            removeLineFromMap();
-            Log.d(LOGTAG, "Reached way point");
-            Data.INSTANCE.setSavedWayPointEvent(event);
+        removeLineFromMap();
+        Log.d(LOGTAG, "Reached way point");
+        Data.INSTANCE.setSavedWayPointEvent(event);
 
-            // Show pop up with explanation
-            new AlertPopUp(getActivity(),getString(R.string.reached_popup_title), getString(R.string.reached_popup_message)).show();
+        // Show pop up with explanation
+        if(getActivity() != null)
+            new AlertPopUp(getActivity(), getString(R.string.reached_popup_title), getString(R.string.reached_popup_message)).show();
 
-            goToSearchState(event);
-//        }
+        goToSearchState(event);
     }
 
     /**
@@ -353,7 +371,7 @@ public class MapFragment extends Fragment {
                     Log.d(LOGTAG, "Completed \nReceived collectable: " + newCollectable.getName());
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(newCollectable)).commit();
                 });
-                stopRoute();
+                removeCompletionPoint();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 2)) {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 3)) {
