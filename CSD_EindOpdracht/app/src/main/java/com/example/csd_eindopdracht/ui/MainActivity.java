@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import com.example.csd_eindopdracht.BuildConfig;
 import com.example.csd_eindopdracht.dataModel.Data;
@@ -27,6 +28,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
@@ -75,5 +77,15 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        for(Fragment f : fragmentList)
+            if(f instanceof MapFragment)
+                if(!EventBus.getDefault().isRegistered(f))
+                    EventBus.getDefault().register(f);
     }
 }
