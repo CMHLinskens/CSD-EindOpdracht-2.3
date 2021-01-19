@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="yugioh_orange">#ff5200</color>
+    <color name="yugioh_orange_2">#d94600</color>
+    <color name="yugioh_reddish_brown">#6f0000</color>
+    <color name="yugioh_reddish_brown_dark">#400000</color>
+    <color name="yugioh_turquoise">#00263b</color>
+    <color name="yugioh_turquoise_2">#002133</color>
+    <color name="yugioh_soft_blue">#00a1ab</color>
+
 </resources>

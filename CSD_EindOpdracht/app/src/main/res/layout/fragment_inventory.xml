@@ -3,15 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fragment_background"
     >
 
     <TextView
         android:id="@+id/text_view_inventory_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="@string/title_inventory"
-        android:textSize="40sp"
+        android:textSize="60sp"
         android:layout_margin="10dp"
+        android:fontFamily="@font/yugioh_font"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +25,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:text="@string/button_daily_spin"
+        android:fontFamily="@font/yugioh_font"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_inventory_title" />
@@ -30,7 +35,9 @@
         android:id="@+id/text_view_inventory_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="placeholder"
+        android:text="  "
+        android:fontFamily="@font/yugioh_font"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_inventory_spin" />
