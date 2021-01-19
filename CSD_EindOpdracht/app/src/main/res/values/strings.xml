@@ -23,5 +23,8 @@
     <string name="rarity_bonus">\"Rarity Bonus: \"</string>
     <string name="points">Points</string>
     <string name="spin">Spin</string>
+    <string name="button_normal_spin">Spin for 1000</string>
+    <string name="spin_wait_text">"NEXT FREE SPIN: "</string>
+    <string name="spin_ready_text">READY</string>
 
 </resources>

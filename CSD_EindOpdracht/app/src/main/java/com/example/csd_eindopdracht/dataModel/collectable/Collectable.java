@@ -55,4 +55,6 @@ public abstract class Collectable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public int calculatePointValue() { return (int)(10 * (this.level * this.level * (this.level*0.5))); }
 }

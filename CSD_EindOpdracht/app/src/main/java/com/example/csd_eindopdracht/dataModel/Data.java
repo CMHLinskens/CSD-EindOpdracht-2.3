@@ -46,12 +46,14 @@ public enum Data {
     private List<Collectable> inventory = new ArrayList<>();
     private DataApiManager dataApiManager;
     private LocationService.WayPointReachedEvent savedWayPointEvent = null;
+    private int points;
 
     public Factory getFactory() { return this.factory; }
     public List<WayPoint> getWayPoints() { return this.wayPoints; }
     public List<Collectable> getInventory() { return this.inventory; }
     public LocationService.WayPointReachedEvent getSavedWayPointEvent() { return this.savedWayPointEvent; }
     public void setSavedWayPointEvent(LocationService.WayPointReachedEvent wayPointEvent) { this.savedWayPointEvent = wayPointEvent; }
+    public int getPoints() { return this.points; }
 
     /**
      * Method called on start up of app.
@@ -66,7 +68,7 @@ public enum Data {
         dataApiManager = new YugiohDataAPIManager(factory);
 
         // Uncomment to reset all saved data.
-        editor.clear().apply();
+//        editor.clear().apply();
 
         try {
             JSONArray wayPointsJsonArray = new JSONArray(getJsonFromAssets(context, "waypoints.json"));
@@ -80,12 +82,28 @@ public enum Data {
 
         // Get all collected collectables
         retrieveInventory();
-
-        // If it is the first time the user uses this app fill the inventory with 5 random cards
-        if(inventory.size() == 0)
-            for(int i = 1; i < 6; i++)
-                getRandomCardWithLevel(i, this::addToInventory);
+        retrieveSavedPoints();
     }
+
+    /**
+     * Adds/subtracts the given amount of points to the points variable
+     * And saves it to shared preferences
+     * @param points point to add/subtract
+     */
+    public void addOrSubtractPoints(int points){
+        this.points += points;
+        editor.putInt("points", this.points).apply();
+        Log.d(LOGTAG, "Points: " + this.points);
+
+    }
+
+    /**
+     * Retrieves the saved amount of points in shared preferences
+     */
+    private void retrieveSavedPoints(){
+        this.points = sharedPreferences.getInt("points", 0);
+    }
+
 
     /**
      * Adds new collectable to inventory list and saves to shared preferences
@@ -140,6 +158,12 @@ public enum Data {
 
         if(inventoryIDs.size() > 0)
             getCardsWithID(inventoryIDs);
+        else {
+            // If it is the first time the user uses this app fill the inventory with 5 random cards ranging from level 1 to 5
+            for(int i = 1; i < 6; i++) {
+                getRandomCardWithLevel(i, this::addToInventory);
+            }
+        }
     }
 
     /**
