@@ -27,8 +27,6 @@
         <!-- Customize your theme here. -->
         <item name="android:textColor">@color/white</item>
         <item name="android:fontFamily">@font/yugioh_font</item>
-
-<!--        <item name="android:windowTranslucentStatus">true</item>-->
     </style>
 
 </resources>
