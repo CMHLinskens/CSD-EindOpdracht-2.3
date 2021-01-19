@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="370dp"
     android:layout_height="450dp"
-    android:layout_gravity="center"
-    android:background="@android:color/transparent">
+    android:layout_gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_rounded"
+        android:background="@drawable/popup"
         android:orientation="vertical"
+
         >
 
         <TextView
@@ -21,18 +21,19 @@
             android:textAlignment="center"
             android:text="@string/choose_your_card"
             android:textSize="28sp"
-            android:textColor="@color/black"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
+
             android:id="@+id/recycler_choose_card_popup"
+            android:background="@color/yugioh_reddish_brown"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="10dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

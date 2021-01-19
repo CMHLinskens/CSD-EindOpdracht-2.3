@@ -20,7 +20,7 @@
     <string name="accept">Accept</string>
     <string name="refuse">Refuse</string>
     <string name="choose_your_card">Choose your card</string>
-    <string name="rarity_bonus">\"Rarity Bonus: \"</string>
+    <string name="rarity_bonus">Rarity Bonus: </string>
     <string name="points">Points</string>
     <string name="spin">Spin</string>
     <string name="button_normal_spin">Spin for 1000</string>

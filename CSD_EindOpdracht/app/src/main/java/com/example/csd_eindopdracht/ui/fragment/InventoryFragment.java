@@ -1,5 +1,7 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -122,7 +124,9 @@ public class InventoryFragment extends Fragment {
                 lastSpinDateTime = DateTime.now();
                 timer.scheduleAtFixedRate(timerTask, 0, 1000);
                 isReadyToDailySpin = false;
-                new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
+                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -720 + randomLevel * 30);
+                spinPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                spinPopUp.show();
                 initializeSpinButton(view);
             });
         } else if (Data.INSTANCE.getPoints() >= 1000){
@@ -137,7 +141,9 @@ public class InventoryFragment extends Fragment {
                     Looper.prepare();
                     new Handler(Looper.getMainLooper()).post(() -> collectableAdapter.notifyDataSetChanged());
                 });
-                new SpinPopUp(getActivity(), 3000, 720 - randomLevel * 30).show();
+                SpinPopUp spinPopUp = new SpinPopUp(getActivity(), 3000, -720 + randomLevel * 30);
+                spinPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                spinPopUp.show();
                 initializeSpinButton(view);
             });
         } else {

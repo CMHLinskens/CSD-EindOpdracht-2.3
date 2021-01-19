@@ -21,11 +21,11 @@
 
     <Button
         android:id="@+id/btn_inventory_spin"
-        android:layout_width="120dp"
+        android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:text="@string/button_daily_spin"
         android:fontFamily="@font/yugioh_font"
+        android:text="@string/button_daily_spin"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
