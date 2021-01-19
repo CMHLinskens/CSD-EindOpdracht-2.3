@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/fragment_background">
 
     <TextView
         android:id="@+id/text_view_reward_title"
@@ -47,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/yugioh_font"
                 android:text="@string/your_card"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:layout_gravity="center"/>
 
             <include
                 android:id="@+id/placeholder_collectable_your"
@@ -82,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/yugioh_font"
+                android:layout_gravity="center"
                 android:text="@string/cached_card"
                 android:textSize="25sp" />
 

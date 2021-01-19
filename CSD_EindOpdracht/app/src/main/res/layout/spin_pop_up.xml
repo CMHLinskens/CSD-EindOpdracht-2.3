@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
     android:layout_height="500dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/yugioh_reddish_brown">
 
     <TextView
         android:id="@+id/text_spin_title"
@@ -16,7 +17,9 @@
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/white"
+        android:background="@color/yugioh_reddish_brown_dark"/>
 
     <ImageView
         android:id="@+id/image_spin_pointer"
