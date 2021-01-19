@@ -47,6 +47,7 @@ public enum Data {
     private DataApiManager dataApiManager;
     private LocationService.WayPointReachedEvent savedWayPointEvent = null;
     private int points;
+    private WayPoint selectedRouteWayPoint = null;
 
     public Factory getFactory() { return this.factory; }
     public List<WayPoint> getWayPoints() { return this.wayPoints; }
@@ -54,6 +55,8 @@ public enum Data {
     public LocationService.WayPointReachedEvent getSavedWayPointEvent() { return this.savedWayPointEvent; }
     public void setSavedWayPointEvent(LocationService.WayPointReachedEvent wayPointEvent) { this.savedWayPointEvent = wayPointEvent; }
     public int getPoints() { return this.points; }
+    public WayPoint getSelectedRouteWayPoint() { return selectedRouteWayPoint; }
+    public void setSelectedRouteWayPoint(WayPoint selectedRouteWayPoint) { this.selectedRouteWayPoint = selectedRouteWayPoint; }
 
     /**
      * Method called on start up of app.

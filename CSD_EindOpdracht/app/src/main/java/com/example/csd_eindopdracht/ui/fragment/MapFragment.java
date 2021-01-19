@@ -129,6 +129,9 @@ public class MapFragment extends Fragment {
         if(Data.INSTANCE.getSavedWayPointEvent() != null){
             goToSearchState(Data.INSTANCE.getSavedWayPointEvent());
         }
+        if(Data.INSTANCE.getSelectedRouteWayPoint() != null){
+            startRoute(Data.INSTANCE.getSelectedRouteWayPoint());
+        }
         return view;
     }
 
@@ -164,6 +167,7 @@ public class MapFragment extends Fragment {
      */
     private void startRoute(WayPoint wayPoint) {
         selectedWayPoint = wayPoint;
+        Data.INSTANCE.setSelectedRouteWayPoint(selectedWayPoint);
         getRouteToPoint(wayPoint.getLocation());
     }
 
@@ -172,6 +176,7 @@ public class MapFragment extends Fragment {
      */
     private void stopRoute(){
         removeLineFromMap();
+        Data.INSTANCE.setSelectedRouteWayPoint(null);
 //        removeSearchAreaFromMap();
         selectedWayPoint = null;
     }
