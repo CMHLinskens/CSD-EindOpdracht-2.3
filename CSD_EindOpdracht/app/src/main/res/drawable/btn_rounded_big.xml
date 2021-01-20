@@ -3,10 +3,10 @@
     <item>
         <shape android:shape="rectangle">
             <corners
-                android:bottomLeftRadius="30dp"
-                android:bottomRightRadius="30dp"
-                android:topLeftRadius="30dp"
-                android:topRightRadius="30dp" />
+                android:bottomLeftRadius="45dp"
+                android:bottomRightRadius="45dp"
+                android:topLeftRadius="45dp"
+                android:topRightRadius="45dp" />
             <padding
                 android:bottom="15dp"
                 android:left="15dp"
@@ -14,8 +14,12 @@
                 android:top="15dp" />
             <solid android:color="@color/yugioh_reddish_brown_dark" />
             <size
-                android:width="56dp"
-                android:height="56dp" />
+                android:width="90dp"
+                android:height="90dp" />
+
+            <stroke android:color="@color/yugioh_reddish_brown_dark_2"
+                android:width="2dp"
+                />
         </shape>
     </item>
 </layer-list>
