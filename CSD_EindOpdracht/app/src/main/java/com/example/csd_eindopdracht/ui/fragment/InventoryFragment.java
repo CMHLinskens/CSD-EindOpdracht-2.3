@@ -88,6 +88,7 @@ public class InventoryFragment extends Fragment {
         ImageButton mapButton = view.findViewById(R.id.btn_inventory_map);
         mapButton.setOnClickListener(v -> {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).addToBackStack(null).commit();
+            getFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_enter_right, R.anim.anim_exit_left).replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).addToBackStack(null).commit();
         });
     }
 
