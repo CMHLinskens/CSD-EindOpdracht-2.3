@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -76,11 +77,18 @@ public class InventoryFragment extends Fragment {
             isReadyToDailySpin = true;
         }
 
+        initializeMapButton(view);
         initializeSpinButton(view);
         initializeTimerTextView(view);
 
-        // TODO: SAVE DARK MAGICIAN
         return view;
+    }
+
+    private void initializeMapButton(View view) {
+        ImageButton mapButton = view.findViewById(R.id.btn_inventory_map);
+        mapButton.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).addToBackStack(null).commit();
+        });
     }
 
     private void initializeTimerTextView(View view) {
