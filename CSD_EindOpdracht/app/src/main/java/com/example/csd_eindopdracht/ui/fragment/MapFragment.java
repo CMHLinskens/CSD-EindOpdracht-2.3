@@ -1,17 +1,13 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -22,19 +18,14 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.csd_eindopdracht.BuildConfig;
 import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.Data;
-import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.dataModel.ors.Route;
 import com.example.csd_eindopdracht.dataModel.ors.TravelType;
-import com.example.csd_eindopdracht.dataModel.wayPoint.CachePoint;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
 import com.example.csd_eindopdracht.services.LocationService;
 import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
-import com.example.csd_eindopdracht.services.ServerManager;
 import com.example.csd_eindopdracht.ui.popup.AlertPopUp;
-import com.example.csd_eindopdracht.util.RandomCardListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,15 +34,12 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
-import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
-import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,7 +106,7 @@ public class MapFragment extends Fragment {
 
         button = view.findViewById(R.id.btn_map_inventory);
         button.setOnClickListener(v -> {
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createInventoryFragment()).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_enter_left, R.anim.anim_exit_right).replace(R.id.fragment_container, Data.INSTANCE.getFactory().createInventoryFragment()).addToBackStack(null).commit();
         });
         
         guessButton = view.findViewById(R.id.btn_map_guess);
