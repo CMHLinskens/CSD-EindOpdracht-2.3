@@ -371,7 +371,7 @@ public class MapFragment extends Fragment {
                 Toast.makeText(getContext(), getString(R.string.hot), Toast.LENGTH_SHORT).show();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 3)) {
                 Toast.makeText(getContext(), getString(R.string.warm), Toast.LENGTH_SHORT).show();
-            } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 5)) {
+            } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 4)) {
                 Toast.makeText(getContext(), getString(R.string.cold), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), getString(R.string.freezing), Toast.LENGTH_SHORT).show();

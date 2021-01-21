@@ -37,7 +37,7 @@ public class LocationService extends Service {
     private static final float LOCATION_DISTANCE = 1f;
     LocationListener locationListener = null;
     public static final double DISTANCE_THRESHOLD = 40;
-    private static final double COMPLETION_THRESHOLD = 5;
+    private static final double COMPLETION_THRESHOLD = 10;
 
     public static class WayPointReachedEvent {
         WayPoint wayPoint;

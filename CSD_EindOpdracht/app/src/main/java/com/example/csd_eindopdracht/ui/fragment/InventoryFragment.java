@@ -1,5 +1,6 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class InventoryFragment extends Fragment {
     private boolean isReadyToDailySpin;
     private TimerTask timerTask;
     private Timer timer;
+    private TextView pointsTextView;
 
     @Nullable
     @Override
@@ -79,15 +81,22 @@ public class InventoryFragment extends Fragment {
 
         initializeMapButton(view);
         initializeSpinButton(view);
+        initializePointsTextView(view);
         initializeTimerTextView(view);
 
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
+    private void initializePointsTextView(View view) {
+        pointsTextView = view.findViewById(R.id.text_view_inventory_points);
+        pointsTextView.setText(Data.INSTANCE.getPoints() + "P");
+    }
+
     private void initializeMapButton(View view) {
         ImageButton mapButton = view.findViewById(R.id.btn_inventory_map);
         mapButton.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).addToBackStack(null).commit();
+            assert getFragmentManager() != null;
             getFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_enter_right, R.anim.anim_exit_left).replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).addToBackStack(null).commit();
         });
     }
@@ -111,7 +120,7 @@ public class InventoryFragment extends Fragment {
         if (!isReadyToDailySpin)
             timer.scheduleAtFixedRate(timerTask, 0, 1000);
         else
-            timerTextView.setText(getString(R.string.spin_ready_text));
+            timerTextView.setText("");
     }
 
     private void initializeSpinButton(View view) {
@@ -144,6 +153,7 @@ public class InventoryFragment extends Fragment {
 
             spinButton.setOnClickListener(v -> {
                 Data.INSTANCE.addOrSubtractPoints(-1000);
+                pointsTextView.setText(Data.INSTANCE.getPoints() + "P");
                 int randomLevel = new Random().nextInt(12) + 1;
                 Data.INSTANCE.getRandomCardWithLevel(randomLevel, newCollectable -> {
                     Data.INSTANCE.addToInventory(newCollectable);
