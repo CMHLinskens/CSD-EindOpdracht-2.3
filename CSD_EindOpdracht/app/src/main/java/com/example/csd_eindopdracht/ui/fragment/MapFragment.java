@@ -57,7 +57,7 @@ public class MapFragment extends Fragment {
     private ImageButton button;
     private MapView mapView = null;
     private IMapController mapController = null;
-    private final GeoPoint myLocation = new GeoPoint(0,0);
+    private final GeoPoint myLocation = new GeoPoint(0.0,0.0);
     private Marker myLocationMarker = null;
     private final OpenRouteServiceManager openRouteServiceManager = new OpenRouteServiceManager();
     private WayPoint selectedWayPoint = null;

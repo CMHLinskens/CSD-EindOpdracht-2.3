@@ -35,6 +35,7 @@ import com.example.csd_eindopdracht.services.OpenRouteServiceManager;
 import com.example.csd_eindopdracht.ui.fragment.MapFragment;
 import com.example.csd_eindopdracht.util.Factory;
 import com.example.csd_eindopdracht.util.YugiohFactory;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOGTAG = MainActivity.class.getName();

@@ -1,7 +1,6 @@
 package com.example.csd_eindopdracht.services;
 
 import android.location.Location;
-import android.util.Log;
 
 import com.example.csd_eindopdracht.dataModel.ors.TravelType;
 

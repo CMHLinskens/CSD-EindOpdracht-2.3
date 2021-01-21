@@ -173,7 +173,7 @@ public enum Data {
      * @param fileName name of the file to read from
      * @return json file content in a string
      */
-    private String getJsonFromAssets(Context context, String fileName) {
+    public String getJsonFromAssets(Context context, String fileName) {
         String jsonString;
         try {
             InputStream inputStream = context.getAssets().open(fileName);

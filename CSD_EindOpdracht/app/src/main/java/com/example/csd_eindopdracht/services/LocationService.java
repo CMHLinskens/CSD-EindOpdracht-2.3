@@ -1,12 +1,9 @@
 package com.example.csd_eindopdracht.services;
 
-import android.Manifest;
-import android.app.Application;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,7 +12,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.example.csd_eindopdracht.R;
@@ -23,8 +19,6 @@ import com.example.csd_eindopdracht.dataModel.Data;
 import com.example.csd_eindopdracht.dataModel.wayPoint.WayPoint;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.Random;
@@ -88,7 +82,7 @@ public class LocationService extends Service {
      * @param location center point of circle
      * @return GeoPoint with random point coordinates
      */
-    private static GeoPoint getRandomCompletionPoint(GeoPoint location) {
+    public static GeoPoint getRandomCompletionPoint(GeoPoint location) {
         Random random = new Random();
         int maxOffSetLatitude = 3154653;
         int maxOffSetLongitude = 3984365;

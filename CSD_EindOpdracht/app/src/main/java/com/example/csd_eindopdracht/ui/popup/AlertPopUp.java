@@ -25,7 +25,6 @@ public class AlertPopUp extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.alert_pop_up);
-        // TODO make corners transparent
         TextView titleView = findViewById(R.id.text_alert_title);
         TextView messageView = findViewById(R.id.text_alert_message);
 

@@ -66,7 +66,6 @@ public class InventoryFragment extends Fragment {
         collectableRecyclerView.setAdapter(collectableAdapter);
 
         lastSpinDateTime = Data.INSTANCE.getLastSpinDate();
-//        lastSpinDateTime = DateTime.parse("2021-01-13T10:56:15.819+01:00");
         currentDateTime = DateTime.now();
 
         if (lastSpinDateTime != null) {
@@ -99,7 +98,7 @@ public class InventoryFragment extends Fragment {
             @Override
             public void run() {
                 // Every tick, the textView will display the remaining time in hh:mm:ss
-                period = new Period(lastSpinDateTime, currentDateTime); // TODO: fix timer seconds
+                period = new Period(lastSpinDateTime, currentDateTime);
                 Period nextTimePeriod = new Period(lastSpinDateTime.plusHours(20).minusHours(getTotalHours(period)), DateTime.now());
                 String formattedTime = new PeriodFormatterBuilder().minimumPrintedDigits(2).printZeroAlways().appendHours().appendSeparator(":").appendMinutes().appendSeparator(":").appendSeconds().toFormatter().print(nextTimePeriod);
                 String nextSpinTime = formattedTime.replaceAll("-", "");
