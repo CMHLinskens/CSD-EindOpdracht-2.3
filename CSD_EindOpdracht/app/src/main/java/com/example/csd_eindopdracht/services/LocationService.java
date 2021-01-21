@@ -27,12 +27,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.Random;
+
 public class LocationService extends Service {
     private static final String LOGTAG = LocationService.class.getName();
 
     private static LocationManager locationManager = null;
     private static final int LOCATION_INTERVAL = 2500;
-    private static final float LOCATION_DISTANCE = 10f;
+    private static final float LOCATION_DISTANCE = 1f;
     LocationListener locationListener = null;
     public static final double DISTANCE_THRESHOLD = 40;
     private static final double COMPLETION_THRESHOLD = 5;
@@ -87,8 +89,19 @@ public class LocationService extends Service {
      * @return GeoPoint with random point coordinates
      */
     private static GeoPoint getRandomCompletionPoint(GeoPoint location) {
-        // TODO calculate a random point within a radius of 40 meters of location
-        return location;
+        Random random = new Random();
+        int maxOffSetLatitude = 3154653;
+        int maxOffSetLongitude = 3984365;
+
+        int rawRandomLatitude = random.nextInt(maxOffSetLatitude) + random.nextInt(maxOffSetLatitude);
+        int randomLatitude = rawRandomLatitude > maxOffSetLatitude? maxOffSetLatitude - rawRandomLatitude : rawRandomLatitude;
+        double offSetLatitude = randomLatitude / 10000000000.0;
+
+        int rawRandomLongitude = random.nextInt(maxOffSetLongitude) + random.nextInt(maxOffSetLongitude);
+        int randomLongitude = rawRandomLongitude > maxOffSetLongitude? maxOffSetLongitude - rawRandomLongitude : rawRandomLongitude;
+        double offsetLongitude = randomLongitude / 10000000000.0;
+        
+        return new GeoPoint(location.getLatitude() + offSetLatitude, location.getLongitude() + offsetLongitude);
     }
 
     /**
