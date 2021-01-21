@@ -30,7 +30,7 @@ public class YugiohFactory extends Factory{
                     String.valueOf(jsonObject.getInt("id")),
                     jsonObject.getString("desc"));
         } catch (JSONException e) {
-            Log.e(LOGTAG, "Error: " + e.getMessage());
+            Log.d(LOGTAG, "Skipping card");
         }
         return null;
     }
