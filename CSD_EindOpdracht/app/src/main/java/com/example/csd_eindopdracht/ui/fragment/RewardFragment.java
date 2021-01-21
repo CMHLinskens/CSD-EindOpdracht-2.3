@@ -1,5 +1,7 @@
 package com.example.csd_eindopdracht.ui.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,6 +74,7 @@ public class RewardFragment extends Fragment {
     private void initializeChooseCardButton(View view) {
         chooseCardButton = view.findViewById(R.id.btn_reward_choose);
         ChooseCardPopUp chooseCardPopUp = new ChooseCardPopUp(getContext(), yourCollectable);
+        chooseCardPopUp.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         chooseCardButton.setOnClickListener(v -> {
             chooseCardPopUp.setOnDismissListener(dialog -> {
                 if (chooseCardPopUp.getCollectable() != null) {

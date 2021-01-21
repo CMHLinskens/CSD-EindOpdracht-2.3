@@ -60,7 +60,7 @@
             <Button
                 android:id="@+id/btn_reward_choose"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="63dp"
                 android:fontFamily="@font/yugioh_font"
                 android:text="@string/pick_a_card"
                 android:textSize="17sp" />

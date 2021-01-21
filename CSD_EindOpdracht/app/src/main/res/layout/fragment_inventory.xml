@@ -22,7 +22,7 @@
     <Button
         android:id="@+id/btn_inventory_spin"
         android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_height="63dp"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/yugioh_font"
         android:text="@string/button_daily_spin"
