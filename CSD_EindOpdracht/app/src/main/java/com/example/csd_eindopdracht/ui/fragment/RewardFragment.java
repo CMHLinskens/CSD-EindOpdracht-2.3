@@ -91,7 +91,6 @@ public class RewardFragment extends Fragment {
         acceptButton = view.findViewById(R.id.btn_reward_accept);
         acceptButton.setEnabled(false);
         acceptButton.setOnClickListener(v -> {
-            // TODO: add alert pop-up: are you sure you accept this trade?
             Data.INSTANCE.removeFromInventory(yourCollectable);
             Data.INSTANCE.addToInventory(cachedCollectable);
             Data.INSTANCE.addOrSubtractPoints(yourCollectable.calculatePointValue());
@@ -102,7 +101,6 @@ public class RewardFragment extends Fragment {
     private void initializeRefuseButton(View view) {
         refuseButton = view.findViewById(R.id.btn_reward_refuse);
         refuseButton.setOnClickListener(v -> {
-            // TODO: add alert pop-up: are you sure you refuse this trade?
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createMapFragment()).commit();
         });
     }

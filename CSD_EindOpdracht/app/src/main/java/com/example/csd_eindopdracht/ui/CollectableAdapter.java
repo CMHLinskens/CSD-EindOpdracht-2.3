@@ -1,6 +1,5 @@
 package com.example.csd_eindopdracht.ui;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.csd_eindopdracht.R;
 import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CollectableAdapter extends RecyclerView.Adapter<CollectableAdapter.CollectableViewHolder> {

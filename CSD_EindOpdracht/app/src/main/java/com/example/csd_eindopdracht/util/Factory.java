@@ -21,7 +21,7 @@ public abstract class Factory {
 
     public abstract Collectable createCollectable(String name, String imgLink, int level, String id, String description);
     public abstract Collectable createCollectable(JSONObject jsonObject);
-    public abstract CachePoint createCachePoint(String name, GeoPoint location, Collectable collectable);
+    public abstract CachePoint createCachePoint(String name, GeoPoint location);
     public abstract CachePoint createCachePoint(JSONObject jsonObject);
 
     public Fragment createWayPointDetailFragment(){

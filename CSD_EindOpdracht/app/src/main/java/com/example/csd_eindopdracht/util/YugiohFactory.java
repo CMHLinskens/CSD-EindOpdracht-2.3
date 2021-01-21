@@ -36,8 +36,8 @@ public class YugiohFactory extends Factory{
     }
 
     @Override
-    public CachePoint createCachePoint(String name, GeoPoint location, Collectable collectable) {
-        return new YugiohCachePoint(name, location, collectable);
+    public CachePoint createCachePoint(String name, GeoPoint location) {
+        return new YugiohCachePoint(name, location);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class YugiohFactory extends Factory{
         try {
             return new YugiohCachePoint(jsonObject.getString("name"),
                     new GeoPoint(jsonObject.getDouble("longitude"),
-                    jsonObject.getDouble("latitude")), null);
+                    jsonObject.getDouble("latitude")));
         } catch (JSONException e) {
             e.printStackTrace();
         }

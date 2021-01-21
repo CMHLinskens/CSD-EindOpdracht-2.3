@@ -1,9 +1,7 @@
 package com.example.csd_eindopdracht.services.dataApiManager;
 
-import com.example.csd_eindopdracht.dataModel.collectable.Collectable;
 import com.example.csd_eindopdracht.util.Factory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -28,7 +26,6 @@ public class YugiohDataAPIManager extends DataApiManager {
 
     @Override
     public void getCardWithName(String name, Callback callback) {
-        // TODO check if name needs formatting
         final String url = "https://db.ygoprodeck.com/api/v7/cardinfo.php" +
                 "?name=" + name;
 
