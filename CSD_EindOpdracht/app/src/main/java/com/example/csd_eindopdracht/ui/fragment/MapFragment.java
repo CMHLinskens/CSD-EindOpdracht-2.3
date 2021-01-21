@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polygon;
@@ -70,20 +71,15 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        // Subscribe to EventBus
-//        if(!EventBus.getDefault().isRegistered(this))
-//            EventBus.getDefault().register(this);
-
         mapView = view.findViewById(R.id.osm_map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setDestroyMode(false);
         mapView.setMultiTouchControls(true);
-        mapView.setBuiltInZoomControls(false);
+        mapView.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
         mapView.setMaxZoomLevel(21.0);
         mapView.setMinZoomLevel(5.0);
         mapController = mapView.getController();
-        mapController.setZoom(19.0);
-
+        mapController.setZoom(17.0);
 
         myLocationMarker = new Marker(mapView);
         myLocationMarker.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_location, null));
@@ -100,7 +96,6 @@ public class MapFragment extends Fragment {
         ImageButton myLocationButton = view.findViewById(R.id.btn_map_mylocation);
         myLocationButton.setOnClickListener(view1 -> {
             mapController.setCenter(myLocation);
-            mapController.setZoom(19.0);
             mapView.invalidate();
         });
 
@@ -169,6 +164,9 @@ public class MapFragment extends Fragment {
         selectedWayPoint = null;
     }
 
+    /**
+     * Remove completion point from system
+     */
     private void removeCompletionPoint(){
         if(completionPoint != null) {
             Data.INSTANCE.setSavedWayPointEvent(null);
@@ -363,7 +361,6 @@ public class MapFragment extends Fragment {
         if(completionPoint != null) {
             if (LocationService.checkIfInBounds(myLocation, completionPoint, 1)) {
                 Data.INSTANCE.getRandomCardWithLevel((new Random().nextInt(12) + 1), newCollectable -> {
-                    Log.d(LOGTAG, "Completed \nReceived collectable: " + newCollectable.getName());
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(newCollectable)).commit();
                 });
                 removeCompletionPoint();
