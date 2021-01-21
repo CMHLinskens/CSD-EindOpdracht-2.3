@@ -171,6 +171,11 @@ public class InventoryFragment extends Fragment {
         }
     }
 
+    /**
+     * Returns the total amount of hours of a date
+     * @param period the period to get the hours from
+     * @return the total amount of hours
+     */
     private int getTotalHours(Period period){
         return period.getHours() + period.getDays() * 24;
     }
