@@ -32,8 +32,8 @@ public abstract class Factory {
         return new InventoryFragment();
     }
 
-    public Fragment createRewardFragment(){
-        throw new NotImplementedError();
+    public Fragment createRewardFragment(Collectable newCollectable){
+        return new RewardFragment(newCollectable);
     }
 
     public Fragment createMapFragment(){

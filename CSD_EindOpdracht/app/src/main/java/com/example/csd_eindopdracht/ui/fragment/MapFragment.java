@@ -361,7 +361,7 @@ public class MapFragment extends Fragment {
         if(completionPoint != null) {
             if (LocationService.checkIfInBounds(myLocation, completionPoint, 1)) {
                 Data.INSTANCE.getRandomCardWithLevel((new Random().nextInt(12) + 1), newCollectable -> {
-                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RewardFragment(newCollectable)).commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fragment_container, Data.INSTANCE.getFactory().createRewardFragment(newCollectable)).commit();
                 });
                 removeCompletionPoint();
             } else if (LocationService.checkIfInBounds(myLocation, completionPoint, 2)) {
