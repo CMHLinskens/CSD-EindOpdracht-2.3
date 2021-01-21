@@ -66,7 +66,7 @@ public class InventoryFragment extends Fragment {
         collectableRecyclerView.setAdapter(collectableAdapter);
 
         lastSpinDateTime = Data.INSTANCE.getLastSpinDate();
-//        lastSpinDateTime = DateTime.parse("2021-01-13T10:56:15.819+01:00");
+//        lastSpinDateTime = DateTime.parse("2021-01-13T10:56:15.819+01:00"); // TODO: use value in tests
         currentDateTime = DateTime.now();
 
         if (lastSpinDateTime != null) {
